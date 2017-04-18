@@ -12,6 +12,9 @@ from dbms import models as cmdb_models
 def index(request):
     return render(request, 'index.html')
 
+def base(request):
+    return render(request, 'base.html')
+
 
 def login(request):
     if request.method == 'POST':
@@ -43,5 +46,14 @@ def register(request):
     else:
         return render(request, 'register.html')
 
+
 def inception(request):
     return render(request, 'inception.html')
+
+
+def backup(request):
+    return HttpResponse('backup')
+
+
+def install(request):
+    return HttpResponse('install')

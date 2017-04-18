@@ -55,4 +55,6 @@ create table mysql_physics_backup_backend_info(
     误删除数据恢复：
         每个binlog的生成的时间
         找到给定的时间范围内的单表操delete/update/insert内容，
+        
+恢复可以在备份池恢复，也可以在业务主机上恢复
 """

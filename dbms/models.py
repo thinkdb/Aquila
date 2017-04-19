@@ -64,6 +64,7 @@ class BackupedInfo(models.Model):
     binlog_start = models.CharField(max_length=50)
     binlog_end = models.CharField(max_length=50)
     binlog_backup_status = models.SmallIntegerField(default=0)
+    binlog_backup_piece = models.CharField(max_length=50)
     r_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:

@@ -2,14 +2,15 @@
 # _*_ coding:utf8 _*_
 
 import pymysql as pytmysqldb
-
+import paramiko
+import socket
+import re
 
 class DBAPI(object):
     def __init__(self, host, user, password, port, database):
         self.conn = pytmysqldb.connect(host=host, user=user, passwd=password, port=int(port),
                                        database=database, autocommit=0, charset='utf8')
         self.cur = self.conn.cursor()
-
 
     def conn_query(self, sql):
         try:
@@ -18,6 +19,16 @@ class DBAPI(object):
         except pytmysqldb.Error as e:
             result = e
         return result
+
+    def conn_dml(self, sql):
+        try:
+            rel = self.cur.execute(sql)
+            if rel:
+                pass
+            else:
+                return rel
+        except Ellipsis as e:
+            return e
 
     def dml_commit(self):
         self.conn.commit()
@@ -28,6 +39,45 @@ class DBAPI(object):
     def close(self):
         self.cur.close()
         self.conn.close()
+
+
+class FtpServer(object):
+    def __init__(self, ip, user_name, passwd, port, comm=0, local_files=0, remote_files=0):
+        self.host = ip
+        self.user_name = user_name
+        self.passwd = passwd
+        self.port = port
+        self.comm = comm
+        self.local_files = local_files
+        self.remote_files = remote_files
+
+    # put the files
+    def putfiles(self):
+        t = paramiko.Transport(self.host, self.port)
+        t.connect(username=self.user_name, password=self.passwd)
+        sftp = paramiko.SFTPClient.from_transport(t)
+        remotepath = self.remote_files
+        localpath = self.local_files
+        sftp.put(localpath, remotepath)
+        t.close()
+
+    # get the files
+    def getfiles(self):
+        t = paramiko.Transport(self.host, self.port)
+        t.connect(username=self.user_name, password=self.passwd)
+        sftp = paramiko.SFTPClient.from_transport(t)
+        remotepath = self.remote_files
+        localpath = self.local_files
+        sftp.get(remotepath, localpath)
+        t.close()
+
+def get_ip():
+    """
+    获取ip地址
+    """
+    ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
+    a = re.sub('\.', '_', ip)
+    return a
 
 
 def inception_sql(db_host, db_user, db_passwd, sql_content, db_port=3306,

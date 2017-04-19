@@ -83,7 +83,7 @@
                     <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> 仪表盘</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-database fa-fw" aria-hidden="true"></i> DBMS<span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-database fa-fw" aria-hidden="true"></i> RDBMS<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
                             <a href="morris.html">性能分析<span class="fa arrow"></span></a>
@@ -108,10 +108,26 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="{% url 'backup' %}">备份与恢复</a>
+                            <a>备份与恢复<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="{% url 'backup' %}">备份</a>
+                                </li>
+                                <li>
+                                    <a href="#">恢复</a>
+                                </li>
+                            </ul>
                         </li>
                         <li>
-                            <a href="{% url 'install' %}">实例安装</a>
+                            <a>实例安装<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="{% url 'install' %}">单机</a>
+                                </li>
+                                <li>
+                                    <a href="#">MHA</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>

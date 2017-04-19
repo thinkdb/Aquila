@@ -12,9 +12,6 @@ from dbms import models as cmdb_models
 def index(request):
     return render(request, 'index.html')
 
-def base(request):
-    return render(request, 'base.html')
-
 
 def login(request):
     if request.method == 'POST':
@@ -48,7 +45,8 @@ def register(request):
 
 
 def inception(request):
-    return render(request, 'inception.html')
+    review_users = ['think', 'zhangsan']
+    return render(request, 'inception.html', {'review_users': review_users})
 
 
 def backup(request):

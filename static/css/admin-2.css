@@ -442,6 +442,24 @@ table.dataTable thead .sorting:after {
   padding-bottom:20px;
 }
 
-.control-group .input-xlarge{
+.Ince-input-group {
+  width: 200px;
+  display: inline;
+}
 
+.Ince-input-group2 {
+  width: 600px;
+}
+
+
+.ince_content_input div{
+  display: inline-block;
+}
+
+.ince_content_right {
+  padding-left: 20px;
+}
+
+.form-group-commit {
+  margin-top: 10px;
 }

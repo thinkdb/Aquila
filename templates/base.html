@@ -66,74 +66,86 @@
             </ul>
              <!-- 左侧菜单栏 -->
             <div class="navbar-default sidebar" role="navigation">
-        <div class="sidebar-nav navbar-collapse">
-            <ul class="nav" id="side-menu">
-                <!-- 搜索框 -->
-                <li class="sidebar-search">
-                    <div class="input-group custom-search-form">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> 仪表盘</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-database fa-fw" aria-hidden="true"></i> RDBMS<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="morris.html">性能分析<span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level">
-                                <li>
-                                    <a href="#">慢SQL优化</a>
-                                </li>
-                                <li>
-                                    <a href="#">SQLAdvisor</a>
-                                </li>
-                            </ul>
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <!-- 搜索框 -->
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
                         </li>
                         <li>
-                            <a>SQL 发布<span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level">
-                                <li>
-                                    <a href="{% url 'inception' %}">SQL 审核</a>
-                                </li>
-                                <li>
-                                    <a href="#">SQL 执行</a>
-                                </li>
-                            </ul>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> 仪表盘</a>
                         </li>
                         <li>
-                            <a>备份与恢复<span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level">
+                            <a href="#"><i class="fa fa-database fa-fw"></i> CMDB<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
                                 <li>
-                                    <a href="{% url 'backup' %}">备份</a>
+                                    <a href="{% url 'host_manager' %}">主机管理</a>
                                 </li>
-                                <li>
-                                    <a href="#">恢复</a>
-                                </li>
+
                             </ul>
+                            <!-- /.nav-second-level -->
                         </li>
+
+                            <!-- /.nav-second-level -->
                         <li>
-                            <a>实例安装<span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level">
+                            <a href="#"><i class="fa fa-database fa-fw" aria-hidden="true"></i> RDBMS<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="{% url 'install' %}">单机</a>
+                                    <a href="morris.html">性能分析<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="#">慢SQL优化</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">SQLAdvisor</a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
-                                    <a href="#">MHA</a>
+                                    <a>SQL 发布<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="{% url 'inception' %}">SQL 审核</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">SQL 执行</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a>备份与恢复<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="{% url 'backup' %}">备份</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">恢复</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a>实例安装<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="{% url 'install' %}">单机</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">MHA</a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </li>
                     </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
+                </div>
+            </div>
         </nav>
     </div>
 

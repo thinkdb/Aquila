@@ -4,7 +4,11 @@
 import pymysql as pytmysqldb
 import paramiko
 import socket
+import struct
 import re
+import time
+
+
 
 class DBAPI(object):
     def __init__(self, host, user, password, port, database):
@@ -27,7 +31,7 @@ class DBAPI(object):
                 pass
             else:
                 return rel
-        except Ellipsis as e:
+        except Exception as e:
             return e
 
     def dml_commit(self):
@@ -71,14 +75,6 @@ class FtpServer(object):
         sftp.get(remotepath, localpath)
         t.close()
 
-def get_ip():
-    """
-    获取ip地址
-    """
-    ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
-    a = re.sub('\.', '_', ip)
-    return a
-
 
 def inception_sql(db_host, db_user, db_passwd, sql_content, db_port=3306,
                   enable_check=1, enable_execute=0,
@@ -105,13 +101,46 @@ def inception_sql(db_host, db_user, db_passwd, sql_content, db_port=3306,
                    enable_execute, enable_ignore_warnings, sleep, sql_content)
     return ince_run_sql
 
-sql_content = """use test;
-                insert into mysql_physics_backup_source_info(id) values(1);
-                insert into mysql_physics_backup_source_info(id) values(1);
-                insert into mysql_physics_backup_source_info(id) values(2);"""
+# sql_content = """use test;
+#                 insert into mysql_physics_backup_source_info(id) values(1);
+#                 insert into mysql_physics_backup_source_info(id) values(1);
+#                 insert into mysql_physics_backup_source_info(id) values(2);"""
+#
 
-run_sql = inception_sql(db_user='think', db_passwd='123456', db_host='192.168.1.6', sql_content=sql_content,enable_execute=1,enable_ignore_warnings=1)
-db = DBAPI(host='192.168.1.6', user='', password='', database='', port=6669)
-result = db.conn_query(run_sql)
-for row in result:
-    print(row)
+
+def ince_run_sql(db_host, sql_content, enable_execute=0, enable_ignore_warnings=0, port=3306):
+
+    run_sql = inception_sql(db_user='think', db_passwd='123456', db_host=db_host, sql_content=sql_content, db_port=port,
+                            enable_execute=enable_execute, enable_ignore_warnings=enable_ignore_warnings)
+    db = DBAPI(host='192.168.1.6', user='', password='', database='', port=6669)
+    result = db.conn_query(run_sql)
+    return result
+
+
+def get_uuid():
+    """
+    生成唯一的工单编号
+    """
+    import random
+    st = int(time.time() * 1000)
+    i = random.randrange(100000, 999999)
+    return int(str(st)+str(i))
+
+
+def get_ip():
+    """
+    获取ip地址
+    """
+    ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
+    aid = re.sub('\.', '_', ip)
+    return aid
+
+
+def num2ip(arg, int_ip):
+    if arg == 'ip':
+        ip = socket.inet_ntoa(struct.pack('I', socket.htonl(int_ip)))
+    else:
+        ip = str(socket.ntohl(struct.unpack('I', socket.inet_aton(int_ip))[0]))
+
+    return ip
+

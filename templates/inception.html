@@ -1,45 +1,16 @@
+<!--继承基础模板-->
 {% extends 'base.html' %}
+
+<!--修改基础模板中的 title 标签-->
 {% block title %}SQL发布{% endblock %}
+
+    <!--修改主体标题-->
     {% block body_title %}
         Inception
     {% endblock %}
+
+    <!--修改主体内容-->
     {% block body_body %}
-        <form class="form-horizontal" method="post">
-            <div class="control-group">
-                <label class="control-label"> 主库地址: </label>
-                <input type="text" name="dbhost"/>
-
-                <label class="control-label"> 数据库名: </label>
-                <input type="text" name="dbname"/>
-
-                <label class="control-label"> 端口: </label>
-                <input type="text" placeholder="3306" name="dbport"/>
-
-            </div>
-
-            <div class="control-group">
-                <label class="control-label"> Sleep_time: </label>
-                <input type="text" name="sleep_time"/>
-
-                <label class="control-label"> 审核人: </label>
-                <select class="input-xlarge">
-                    {% for item in review_users %}
-                        <option>{{ item }}</option>
-                    {% endfor %}
-                </select>
-
-            </div>
-
-            <div class="control-group">
-                <div class="controls">
-                    <div class="textarea">
-                        <textarea  rows="15" cols="120" class="" ></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <div class="controls control-group">
-                <button class="btn btn-success">Commit</button>
-            </div>
-        </form>
+        <!--导入sql提交表单-->
+        {% include 'ince_forms.html' %}
     {% endblock %}

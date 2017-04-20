@@ -20,5 +20,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^dbms/', include('dbms.urls')),
+    url(r'^cmdb/', include('cmdb.urls')),
 
 ]

@@ -1,0 +1,70 @@
+        <form  method="post">
+            <div class="ince_content_input">
+                <div>
+                    <label for="host_id">主库地址</label>
+                    <input class="form-control Ince-input-group" placeholder="Enter text" id="host_id" name="dbhost">
+                </div>
+                <div>
+                    <label for="host_port">端口</label>
+                    <input class="form-control Ince-input-group" placeholder="Enter text" id="host_port" name="dbport">
+                </div>
+                <div>
+                    <label for="db_name">库名</label>
+                    <input class="form-control Ince-input-group" placeholder="Enter text" id="db_name" name="dbname">
+                </div>
+                <div>
+                    <label for="review_user">审核人</label>
+                    <select class="form-control Ince-input-group" id="review_user" name="select_user">
+                        {% for item in review_users %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group form-group-commit">
+                <label>SQL 内容</label>
+                <textarea class="form-control" rows="10" name="sql_area"></textarea>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success">Commit</button>
+            </div>
+
+        </form>
+
+        <div >
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    审核结果
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>执行语句</th>
+                                    <th>建议</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for items in ince_result %}
+                                    {% for rows in item.4 %}
+                                        <tr>
+                                           <td>
+                                               {{ rows }}
+                                           </td>
+
+                                        </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                        <!-- /.table-responsive -->
+                </div>
+                    <!-- /.panel-body -->
+            </div>
+
+        </div>

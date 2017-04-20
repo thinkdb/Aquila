@@ -1,6 +1,6 @@
 # Aquila
 
-# 在 `C:\python35\Lib\site-packages\django\db\models\fields\fields.py` 中添加如下内容,用于支持无符号的整型
+在 `C:\python35\Lib\site-packages\django\db\models\fields\fields.py` 中添加如下内容,用于支持无符号的整型
 ```
 class UnsignedIntegerField(IntegerField):
     def db_type(self, connection):

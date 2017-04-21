@@ -9,7 +9,6 @@ import re
 import time
 
 
-
 class DBAPI(object):
     def __init__(self, host, user, password, port, database):
         self.conn = pytmysqldb.connect(host=host, user=user, passwd=password, port=int(port),

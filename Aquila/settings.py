@@ -24,6 +24,7 @@ SECRET_KEY = 'gr_((yn@n078f3@ov__w!%&$!*%8mphirypd=iazq$8xt_w97('
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -89,7 +90,7 @@ DATABASES = {
         'NAME': 'aquila',
         'USER': 'think',
         'PASSWORD': '123456',
-        'HOST': '192.168.1.51',
+        'HOST': '192.168.1.6',
     }
 }
 

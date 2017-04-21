@@ -3,9 +3,9 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from cmdb import models as cmdb_models
 
+
 def host_manager(request):
     return render(request, 'base.html')
-
 
 
 def login(request):

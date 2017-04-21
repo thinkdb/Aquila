@@ -2,12 +2,32 @@
 
 在 `C:\python35\Lib\site-packages\django\db\models\fields\fields.py` 中添加如下内容,用于支持无符号的整型
 ```
+class TinyIntegerField(SmallIntegerField, Field):
+    def db_type(self, connection):
+        if connection.settings_dict['ENGINE'] == 'django.db.backends.mysql':
+            return "tinyint"
+        else:
+            return super(TinyIntegerField, self).db_type(connection)
+
+class PositiveTinyIntegerField(PositiveSmallIntegerField, Field):
+    def db_type(self, connection):
+        if connection.settings_dict['ENGINE'] == 'django.db.backends.mysql':
+            return "tinyint UNSIGNED"
+        else:
+            return super(PositiveTinyIntegerField, self).db_type(connection)
+
+
+class UnTinyIntAuto(PositiveTinyIntegerField):
+    def db_type(self, connection):
+        return "tinyint UNSIGNED AUTO_INCREMENT"
+
+
 class UnsignedIntegerField(IntegerField):
     def db_type(self, connection):
-        return 'integer UNSIGNED'
+        return "integer UNSIGNED"
 ```
 
-同时修改如下内容：
+同时替换如下内容：
 ```
 __all__ = [str(x) for x in (
     'AutoField', 'BLANK_CHOICE_DASH', 'BigAutoField', 'BigIntegerField',
@@ -17,6 +37,7 @@ __all__ = [str(x) for x in (
     'FloatField', 'GenericIPAddressField', 'IPAddressField', 'IntegerField',
     'NOT_PROVIDED', 'NullBooleanField', 'PositiveIntegerField',
     'PositiveSmallIntegerField', 'SlugField', 'SmallIntegerField', 'TextField',
-    'TimeField', 'URLField', 'UUIDField','UnsignedIntegerField',
+    'TimeField', 'URLField', 'UUIDField','UnsignedIntegerField','TinyIntegerField',
+    'PositiveTinyIntegerField','UnsignedIntegerField','UnTinyIntAuto',
 )]
 ```

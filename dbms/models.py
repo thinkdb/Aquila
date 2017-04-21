@@ -1,10 +1,7 @@
 from django.db import models
-
-# Create your models here.
-
-
-
 # 备份恢复相关的表结构
+
+
 class MysqlBackupSourceInfo(models.Model):
     id = models.AutoField(primary_key=True)
     generator_room_name = models.CharField(max_length=30)

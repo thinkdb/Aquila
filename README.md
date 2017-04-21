@@ -53,3 +53,5 @@ DATABASES = {
     }
 }
 ```
+#### 3. 初始化数据
+运行 scripts/init_data.py 文件， 默认的管理员账号和密码为: admin/123456

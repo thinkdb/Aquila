@@ -25,6 +25,7 @@ class UserInfo(models.Model):
     user_name = models.CharField(max_length=40, unique=True)
     user_pass = models.CharField(max_length=40)
     user_emails = models.CharField(max_length=100)
+    permission = models.ForeignKey('AuthPermissions')
     role = models.ForeignKey('UserRole')
     user_group = models.ForeignKey('UserGroup')
 
@@ -65,21 +66,23 @@ class HostInfo(models.Model):
         index_together = ('host_ip', 'app_type', 'app_port',)
 
 
-'''
-auth_permissions
-    id
-    dd
-    xx
-    xx
-    xx
+class AuthPermissions(models.Model):
+    select_host = models.TinyIntegerField()
+    update_host = models.TinyIntegerField()
+    insert_host = models.TinyIntegerField()
+    delete_host = models.TinyIntegerField()
+    select_user = models.TinyIntegerField()
+    update_user = models.TinyIntegerField()
+    delete_user = models.TinyIntegerField()
+    insert_user = models.TinyIntegerField()
 
-auth_group_permissions
-    id
-    user_group_id
-    per_id
+    class Meta:
+        db_table = 'cmdb_auth_permissions'
 
-user_permissions
-    id
-    user_id
-    per_id
-'''
+
+class AuthGroupPermissions(models.Model):
+    user_group = models.ForeignKey('UserGroup')
+    permission = models.ForeignKey('AuthPermissions')
+
+    class Meta:
+        db_table = 'cmdb_auth_group_permissions'

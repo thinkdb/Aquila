@@ -55,3 +55,11 @@ DATABASES = {
 ```
 #### 3. 初始化数据
 运行 scripts/init_data.py 文件， 默认的管理员账号和密码为: admin/123456
+
+
+#### 4. 使用 inception 功能时，需要修改pymysql工具的源码， 修改如下：
+C:\Python35\Lib\site-packages\pymysql\connections.py 在1109 行前面添加如下内容，
+只要把第一个点前面改成 大于等于5就行
+```
+self.server_version = '5.7.18-log'
+```

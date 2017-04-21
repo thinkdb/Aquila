@@ -27,6 +27,30 @@ models.UserGroup.objects.create(id=3, user_group_name='dba', user_group_jd='数�
 models.HostGroup.objects.create(id=1, host_group_name='db', host_group_jd='数据主机组')
 models.HostGroup.objects.create(id=2, host_group_name='java', host_group_jd='java主机组')
 
+
+# 初始化权限
+
+models.AuthPermissions.objects.create(
+    select_host=1,
+    update_host=1,
+    insert_host=1,
+    delete_host=1,
+    select_user=1,
+    update_user=1,
+    delete_user=1,
+    insert_user=1
+)
+models.AuthPermissions.objects.create(
+    select_host=1,
+    update_host=0,
+    insert_host=0,
+    delete_host=0,
+    select_user=1,
+    update_user=0,
+    delete_user=0,
+    insert_user=0
+)
+
 # 初始化管理员用户
 models.UserInfo.objects.create(
     id=1,
@@ -34,4 +58,6 @@ models.UserInfo.objects.create(
     user_pass='123456',
     user_emails='996846239@qq.com',
     role_id=1,
-    user_group_id=1)
+    user_group_id=1,
+    permission_id = 1
+)

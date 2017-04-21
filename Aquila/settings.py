@@ -90,7 +90,7 @@ DATABASES = {
         'NAME': 'aquila',
         'USER': 'think',
         'PASSWORD': '123456',
-        'HOST': '192.168.1.6',
+        'HOST': '192.168.1.51',
     }
 }
 
@@ -119,7 +119,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+#TIME_ZONE = 'UTC'
+TIME_ZONE = 'CST'
 
 USE_I18N = True
 

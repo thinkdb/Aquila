@@ -50,14 +50,18 @@
                             </thead>
                             <tbody>
                                 {% for items in ince_result %}
-                                    {% for rows in item.4 %}
-                                        <tr>
-                                           <td>
-                                               {{ rows }}
-                                           </td>
+                                    <tr>
+                                        <td>
+                                            {{ items.0 }}
+                                        </td>
+                                        <td>
+                                            {{ items.5 }}
+                                        </td>
+                                        <td>
+                                            {{ items.4 }}
+                                        </td>
 
-                                        </tr>
-                                    {% endfor %}
+                                    </tr>
                                 {% endfor %}
                             </tbody>
                         </table>

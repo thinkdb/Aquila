@@ -26,7 +26,6 @@ class UnsignedIntegerField(IntegerField):
     def db_type(self, connection):
         return "integer UNSIGNED"
 ```
-
 同时替换如下内容：
 ```
 __all__ = [str(x) for x in (
@@ -40,4 +39,17 @@ __all__ = [str(x) for x in (
     'TimeField', 'URLField', 'UUIDField','UnsignedIntegerField','TinyIntegerField',
     'PositiveTinyIntegerField','UnsignedIntegerField','UnTinyIntAuto',
 )]
+```
+2. 修改数据连接信息， 修改Aquila下的settions.py 文件内容
+根据你的实际地址修改
+```
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'aquila',
+        'USER': 'think',
+        'PASSWORD': '123456',
+        'HOST': '192.168.1.6',
+    }
+}
 ```

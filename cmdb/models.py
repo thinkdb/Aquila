@@ -63,3 +63,23 @@ class HostInfo(models.Model):
     class Meta:
         db_table = 'cmdb_host_info'
         index_together = ('host_ip', 'app_type', 'app_port',)
+
+
+'''
+auth_permissions
+    id
+    dd
+    xx
+    xx
+    xx
+
+auth_group_permissions
+    id
+    user_group_id
+    per_id
+
+user_permissions
+    id
+    user_id
+    per_id
+'''

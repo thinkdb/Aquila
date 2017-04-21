@@ -1,6 +1,6 @@
 # Aquila
 
-1. 在 `C:\python35\Lib\site-packages\django\db\models\fields\fields.py` 中添加如下内容,用于支持无符号的整型
+#### 1. 在 `C:\python35\Lib\site-packages\django\db\models\fields\fields.py` 中添加如下内容,用于支持无符号的整型
 ```
 class TinyIntegerField(SmallIntegerField, Field):
     def db_type(self, connection):
@@ -40,7 +40,7 @@ __all__ = [str(x) for x in (
     'PositiveTinyIntegerField','UnsignedIntegerField','UnTinyIntAuto',
 )]
 ```
-2. 修改数据连接信息， 修改Aquila下的settions.py 文件内容
+#### 2. 修改数据连接信息， 修改Aquila下的settions.py 文件内容
 根据你的实际地址修改
 ```
 DATABASES = {

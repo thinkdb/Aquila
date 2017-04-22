@@ -45,6 +45,7 @@ def inception(request):
                     work_order_id=w_id
                 )
                 for item in result:
+                    # 修改数据类型， str to  int
                     sql_sid = item[0]
                     status = item[1]
                     err_id = item[2]
@@ -63,7 +64,7 @@ def inception(request):
                     new.err_id = err_id
                     new.stage_status = stage_status
                     new.error_msg = error_msg
-                    new.sql_conten = sql_content
+                    new.sql_conten = sql_conten
                     new.aff_row = aff_row
                     new.rollback_id = rollback_ip
                     new.backup_dbname = backup_dbname

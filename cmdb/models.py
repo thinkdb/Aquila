@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+# host_group = models.ForeignKey('HostGroup'， to_field='nid)
+# 与 HostGroup 中的 nid 相关键
 
 
 class UserRole(models.Model):
@@ -43,8 +45,8 @@ class HostGroup(models.Model):
 
 
 class UserHostRelationship(models.Model):
-    user_group = models.ForeignKey('UserGroup', rel='id')
-    host_group = models.ForeignKey('HostGroup', rel='id')
+    user_group = models.ForeignKey('UserGroup')
+    host_group = models.ForeignKey('HostGroup')
     lifetime = models.SmallIntegerField()
     expired = models.TinyIntegerField()
 
@@ -86,3 +88,7 @@ class AuthGroupPermissions(models.Model):
 
     class Meta:
         db_table = 'cmdb_auth_group_permissions'
+
+
+class VerboseName(models.Model):
+    first_name = models.CharField("person's first name", max_length=30)

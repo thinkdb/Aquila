@@ -19,7 +19,7 @@ class DBAPI(object):
         try:
             rel = self.cur.execute(sql)
             result = self.cur.fetchall()
-        except pytmysqldb.Error as e:
+        except Exception as e:
             result = e
         return result
 
@@ -100,19 +100,16 @@ def inception_sql(db_host, db_user, db_passwd, sql_content, db_port=3306,
                    enable_execute, enable_ignore_warnings, sleep, sql_content)
     return ince_run_sql
 
-# sql_content = """use test;
-#                 insert into mysql_physics_backup_source_info(id) values(1);
-#                 insert into mysql_physics_backup_source_info(id) values(1);
-#                 insert into mysql_physics_backup_source_info(id) values(2);"""
-#
-
 
 def ince_run_sql(db_host, sql_content, enable_execute=0, enable_ignore_warnings=0, port=3306):
 
     run_sql = inception_sql(db_user='think', db_passwd='123456', db_host=db_host, sql_content=sql_content, db_port=port,
                             enable_execute=enable_execute, enable_ignore_warnings=enable_ignore_warnings)
-    db = DBAPI(host='192.168.1.51', user='', password='', database='', port=6669)
-    result = db.conn_query(run_sql)
+    try:
+        db = DBAPI(host='192.168.1.6', user='', password='', database='', port=6669)
+        result = db.conn_query(run_sql)
+    except Exception as e:
+        result = e
     return result
 
 

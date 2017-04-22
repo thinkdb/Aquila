@@ -49,20 +49,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for items in ince_result %}
-                                    <tr>
-                                        <td>
-                                            {{ items.0 }}
-                                        </td>
-                                        <td>
-                                            {{ items.5 }}
-                                        </td>
-                                        <td>
-                                            {{ items.4 }}
-                                        </td>
-
-                                    </tr>
-                                {% endfor %}
+                                    {% for items in ince_result %}
+                                        {{ forloop }}
+                                        <tr>
+                                            <td>
+                                                {{ items.0 }}
+                                            </td>
+                                            <td>
+                                                {{ items.5 }}
+                                            </td>
+                                            <td>
+                                                {{ items.4 }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                             </tbody>
                         </table>
                     </div>

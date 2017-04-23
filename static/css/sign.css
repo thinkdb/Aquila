@@ -1,0 +1,169 @@
+body{
+    margin: 0 auto;
+}
+.body_position{
+	position: relative;
+}
+.body_img{	
+	vertical-align:middle;
+	text-align:center;
+	margin: 0 auto;
+}
+
+.context p{
+    text-align: center;
+}
+.login_body{
+    height: 240px;
+    width: 310px;
+    border: 1px solid #d1d5da;
+	margin-bottom: 20px;
+}
+.login_user{
+    display: block;
+    border: 1px solid #d1d5da;
+    height: 30px;
+    font-size: 14px;
+    width: 290px;
+    margin: 6px 10px 10px;
+    border-radius: 3px;
+}
+.login_font{
+    margin-left:10px;
+    padding-top: 10px;
+    display: inline-block;
+	float: left;
+    #font-weight: 600;
+}
+.sign_button{
+    height: 35px;
+    width: 290px;
+    margin-top: 25px;
+    background-color: #2899e9;
+    color: #fff;
+    border-radius: 3px;
+    border: 0;
+	cursor: pointer;
+}
+.sign_button_disabled{
+    height: 35px;
+    width: 290px;
+    margin-top: 25px;
+    background-color: #6e6568;
+    color: #fff;
+    border-radius: 3px;
+    border: 0;
+	cursor: not-allowed;
+}
+.forgot_pass{
+    font-size: 12px;
+    float: right;
+    margin-right: 10px;
+    margin-top: 12px;
+    color: #0366d6;
+    text-decoration:none;
+}
+.error_msg{
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    border: 1px solid lightpink;
+    border-radius: 5px;
+    width: 264px;
+    color: #86181d;
+    background-color: #ffdce0;
+}
+
+
+.btn{
+    float: right;
+    color: inherit;
+    text-align: center;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    opacity: 0.6;
+}
+.display_none{
+    display: none;
+}
+.login_bottom{
+	top: 10px;
+	margin: 0 auto;
+	height: 50px;
+    width: 310px;
+    border: 1px solid #d1d5da;
+	vertical-align:middle;
+	text-align:center;
+	margin-bottom: 20px;
+}
+.register_btm{
+    font-size: 15px;
+    margin-right: 0;
+    color: #0366d6;
+    text-decoration:none;
+	cursor: pointer;
+}
+.up_body{
+	#display: table;    
+	min-width: 550px;
+}
+.up_main{
+	width: 550px;
+    padding-top: 30px;
+    margin: 0 auto;
+}
+.up_font_head{
+	font-weight: 300;
+    color: #555;
+	font-size: 20px;
+	vertical-align: middle;
+}
+.up_head{
+	vertical-align: middle;
+    text-align: center;
+}
+.up_join{
+	margin-bottom: 10px;
+}
+.up_login_body{
+	#width: 450px;
+	text-align: center;
+}
+
+.up_text{
+	width: 550px;
+	vertical-align: middle;
+	text-align: left;
+}
+.step_text{
+    border: 1px solid #d1d5da;
+    height: 30px;
+    font-size: 14px;
+    width: 520px;
+    margin-top: 6px;
+    border-radius: 3px;
+	background-color: #fafbfc;
+    display: inline-block;
+}
+.up_font{
+    padding-top: 10px;
+    display: inline-block;
+}
+.up_commit{
+	line-height: 20px;
+	margin-bottom: 20px;
+	float: left;
+}
+.prompt_font{
+    color: #86181d;
+    font-size: 13px;
+}
+.check_flag{
+    color: red;
+    float: right;
+    margin-top: 15px;
+}
+.check_dis_flag{
+    display: none;
+}

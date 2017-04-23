@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup</title>
+	<link rel="stylesheet" href="/static/css/sign.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/font-awesome.min.css">
+</head>
+<body>
+	<div class="up_body">
+		<div class="up_main">
+			<div class="body_img">
+				<img src="img/git.jpg"/>
+			</div>
+			<div class="up_head">
+				<h1 class="up_join">Join Aquila</h1>
+{#				<span class="up_font_head">The best way to design, build, and ship software.</span>#}
+			</div>
+			<div class="up_login_body">
+				<form action="#">
+					<div class="up_text">
+						<label for="username" id="user_error" class="up_font">Username</label>
+                        <label class="prompt_user display_none prompt_font">开头为字母，用户名区分大小写，由长度为6-20个数字,下划线,字母组成</label>
+						<input id="username" type="text" class="step_text" onblur="check_user();"/>
+						<span class="check_dis_flag"><i class="fa fa-check check_flag" aria-hidden="true"></i></span>
+					</div>
+					<div class="up_text">
+						<label for="Email" id="email_error" class="up_font">Email</label>
+                        <label class="prompt_email display_none prompt_font">请输入正确的邮件格式</label>
+						<input id="Email" type="email" class="step_text" onblur="check_email();"/>
+						<span class="check_dis_flag"><i class="fa fa-check check_flag" aria-hidden="true"></i></span>
+					</div>
+					<div class="up_text">
+						<label for="password" id="pass_error" class="up_font">Password</label>
+                        <label class="prompt_pass display_none prompt_font">密码由8到16位字符组成，不能全是字母或数字，不能跟用户名相同</label>
+						<input id="password" type="password" class="step_text" onblur="check_pass();"/>
+						<span  class="check_dis_flag"><i class="fa fa-check check_flag" aria-hidden="true"></i></span>
+					</div>
+					<div class="up_text">
+						<label for="repass" id="repass_error" class="up_font">RePassword</label>
+                        <label class="prompt_repass display_none prompt_font">密码由8到16位字符组成，不能全是字母或数字，不能跟用户名相同</label>
+						<input id="repass" type="password" class="step_text" onblur="check_repass();"/>
+						<span class="check_dis_flag"><i class="fa fa-check check_flag" aria-hidden="true"></i></span>
+					</div>
+					<div class="up_commit">
+						<button id="check_button" class="sign_button sign_button_disabled" onclick="check_commit();">Create an account</button>
+						<!--<input type="button" class="sign_button" value="Create an account" onclick="check_focus('repass');"/>-->
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="/static/jss/sign.js"></script>
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+</html>

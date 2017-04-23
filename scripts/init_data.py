@@ -31,6 +31,7 @@ models.HostGroup.objects.create(id=2, host_group_name='java', host_group_jd='jav
 # 初始化权限
 
 models.AuthPermissions.objects.create(
+    id=1,
     select_host=1,
     update_host=1,
     insert_host=1,
@@ -41,6 +42,7 @@ models.AuthPermissions.objects.create(
     insert_user=1
 )
 models.AuthPermissions.objects.create(
+    id=2,
     select_host=1,
     update_host=0,
     insert_host=0,

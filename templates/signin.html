@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signin</title>
+    <link rel="stylesheet" href="/static/css/sign.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/font-awesome.min.css">
+</head>
+<body>
+    <form action="#" method="post">
+	<div class="body_position">
+        <div class="body_img">
+            <img src="img/git.jpg"/>
+        </div>
+        <div class="body_img"><p>Sign in to Aquila</p></div>
+        <div class="error_msg display_none body_img ">
+            <label>Incorrect username or password.</label>
+            <button class="btn" onclick="close_error('error_msg');"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+
+        <div class="login_body body_img">
+            <label for="user" class="login_font">Username</label>
+            <input id="user" type="text" class="login_user" name="username"/>
+
+            <label for="passwd" class="login_font">Password</label>
+            <a class="forgot_pass" href="#">Forgot password?</a>
+            <input id="passwd" type="password" class="login_user" name="password"/>
+            <input type="button" value="Sign in" class="sign_button body_img" onclick="auth_account('error_msg')"/>
+        </div>
+	</div>
+    </form>
+    <div class="body_position">
+		<div class="login_bottom">
+			<p>New To Aquila? &nbsp;&nbsp;<a class="register_btm" href="signup.html">Create An Account.</a></p>
+		</div>
+	</div>
+</body>
+<script src="/static/jss/sign.js"></script>
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+</html>

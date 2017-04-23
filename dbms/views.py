@@ -4,14 +4,25 @@ from django.shortcuts import render, redirect
 from django.shortcuts import HttpResponse
 from dbms import models as dbms_models
 from scripts import functions
-
+from cmdb.views import auth
+from cmdb.views import AuthAll
 from .models import InceptionAuditDetail
 
+@auth
 def index(request):
-    return render(request, 'index.html')
+    # 获取用户的 cookie,如果没有，则不能登录
+    user_cookie = request.get_signed_cookie('userinfo', salt='adfsfsdfsd')
+    #user_cookie = request.COOKIES.get('userinfo')
+    # if user_cookie:
+    #     return render(request, 'index.html', {'userinfo': user_cookie})
+    # else:
+    #     return redirect('/cmdb/login')
 
+    return render(request, 'index.html', {'userinfo': user_cookie})
 
+@auth
 def inception(request):
+    user_cookie = request.COOKIES.get('userinfo')
     review_users = ['think', 'zhangsan', '2343', '23423', '23423423']
 
     if request.method == 'POST':
@@ -72,19 +83,19 @@ def inception(request):
                     new.sql_hash = sql_hash
                     new.save()
 
-                return render(request, 'inception.html', {'ince_result': result, 'review_users': review_users})
+                return render(request, 'inception.html', {'ince_result': result, 'review_users': review_users, 'userinfo': user_cookie})
             else:
                 context = (('None', 0, 0, 0, "语法错误", sql_content),)
-                return render(request, 'inception.html', {'ince_result': context, 'review_users': review_users})
+                return render(request, 'inception.html', {'ince_result': context, 'review_users': review_users, 'userinfo': user_cookie})
         else:
-            return render(request, 'inception.html', {'review_users': review_users})
+            return render(request, 'inception.html', {'review_users': review_users, 'userinfo': user_cookie})
     else:
-        return render(request, 'inception.html', {'review_users': review_users})
+        return render(request, 'inception.html', {'review_users': review_users, 'userinfo': user_cookie})
 
-
+@auth
 def backup(request):
     return HttpResponse('backup')
 
-
+@auth
 def install(request):
     return HttpResponse('install')

@@ -106,7 +106,7 @@ def ince_run_sql(db_host, sql_content, enable_execute=0, enable_ignore_warnings=
     run_sql = inception_sql(db_user='think', db_passwd='123456', db_host=db_host, sql_content=sql_content, db_port=port,
                             enable_execute=enable_execute, enable_ignore_warnings=enable_ignore_warnings)
     try:
-        db = DBAPI(host='192.168.1.6', user='', password='', database='', port=6669)
+        db = DBAPI(host='192.168.1.51', user='', password='', database='', port=6669)
         result = db.conn_query(run_sql)
     except Exception as e:
         result = e

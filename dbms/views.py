@@ -5,14 +5,14 @@ from django.shortcuts import HttpResponse
 from dbms import models as dbms_models
 from scripts import functions
 from cmdb.views import auth
-from cmdb.views import AuthAll
+from cmdb.views import get_user_cookie
 from .models import InceptionAuditDetail
 
 @auth
 def index(request):
     # 获取用户的 cookie,如果没有，则不能登录
-    user_cookie = request.get_signed_cookie('userinfo', salt='adfsfsdfsd')
-    #user_cookie = request.COOKIES.get('userinfo')
+    #user_cookie = request.get_signed_cookie('userinfo', salt='adfsfsdfsd')
+    user_cookie = get_user_cookie(request)
     # if user_cookie:
     #     return render(request, 'index.html', {'userinfo': user_cookie})
     # else:
@@ -22,7 +22,7 @@ def index(request):
 
 @auth
 def inception(request):
-    user_cookie = request.get_signed_cookie('userinfo', salt='adfsfsdfsd')
+    user_cookie = get_user_cookie(request)
     review_users = ['think', 'zhangsan', '2343', '23423', '23423423']
 
     if request.method == 'POST':

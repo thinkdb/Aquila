@@ -52,8 +52,13 @@ class AuthAll(View):
         except Exception as e:
             return redirect('/cmdb/login')
 
-def login(request):
 
+def get_user_cookie(request):
+    user_cookie = request.get_signed_cookie('userinfo', salt='adfsfsdfsd')
+    return user_cookie
+
+
+def login(request):
     # print(type(request))
     # #print(request.environ)
     # print(request.COOKIES)
@@ -68,10 +73,9 @@ def login(request):
             res = redirect('/dbms/index')
             # res.set_cookie('userinfo', username)  # 明文方式
             res.set_signed_cookie('userinfo', username, salt='adfsfsdfsd') # 加密方式
-            # request.get_signed_cookie('userinfo', username, salt='adfsfsdfsd') #　解密
+            # request.get_signed_cookie('userinfo', salt='adfsfsdfsd') #　解密
             return res
         else:
-            # 通过 ajax 返回用户名或者密码错误
             return render(request, 'login.html', {'user_error': '用户名或密码错误'})
     else:
         return render(request, 'login.html')
@@ -92,18 +96,13 @@ def register(request):
                 user_name=user,
                 user_pass=pwd,
                 user_emails=email,
-                role_id = 5,
-                user_group_id = 2,
-                permission_id = 2
+                role_id=2,
+                user_group_id=2,
+                permission_id=2
             )
             return redirect('/cmdb/login')
     else:
         return render(request, 'register.html')
-
-
-def password_reset(request):
-    return render(request, 'forget_password.html')
-
 
 
 # 生成测试数据

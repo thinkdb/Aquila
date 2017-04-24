@@ -6,21 +6,19 @@ from django.db import models
 
 
 class UserRole(models.Model):
-    user_role_name = models.CharField(max_length=50)
+    user_role_name = models.CharField(max_length=50, unique=True)
     user_role_jd = models.CharField(max_length=50)
 
     class Meta:
         db_table = 'cmdb_user_role'
-        unique_together = ('user_role_name', 'user_role_jd')
 
 
 class UserGroup(models.Model):
-    user_group_name = models.CharField(max_length=50)
+    user_group_name = models.CharField(max_length=50, unique=True)
     user_group_jd = models.CharField(max_length=50)
 
     class Meta:
         db_table = 'cmdb_user_group'
-        unique_together = ('user_group_name', 'user_group_jd')
 
 
 class UserInfo(models.Model):
@@ -36,12 +34,11 @@ class UserInfo(models.Model):
 
 
 class HostGroup(models.Model):
-    host_group_name = models.CharField(max_length=50)
+    host_group_name = models.CharField(max_length=50, unique=True)
     host_group_jd = models.CharField(max_length=50)
 
     class Meta:
         db_table = 'cmdb_host_group'
-        unique_together = ('host_group_name', 'host_group_jd')
 
 
 class UserHostRelationship(models.Model):

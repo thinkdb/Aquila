@@ -2,9 +2,13 @@
 # _*_ coding:utf8 _*_
 
 import pymysql
+
+
 sql='/*--user=think;--password=123456;--host=192.168.1.51;--execute=1;--port=3306;*/\
 inception_magic_start;\
 use aquila;\
+CREATE TABLE adaptive_office(id int);\
+CREATE TAE adaptive_office(id int);\
 CREATE TABLE adaptive_office(id int);\
 inception_magic_commit;'
 try:

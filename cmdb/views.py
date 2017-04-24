@@ -163,3 +163,11 @@ def test(request):
 
     # 这一步是让 浏览器 确认收到的 包含html文本的内容 为正常的内容，不是外部来攻击的内容，不加的话，会原封不动把上面html文件内容在浏览器上显示出来
     return render(request, 'test.html', {'data_page': data, 'page_str': page_html})
+
+
+def hostgroup_manage(request):
+    user_cookie = get_user_cookie(request)
+    result = cmdb_models.HostGroup.objects.all()
+    if result:
+        hostgroup_list = result
+    return render(request, 'hostgroup_manage.html', {'userinfo': user_cookie, 'hostgroup_list': hostgroup_list})

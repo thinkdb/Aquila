@@ -90,7 +90,7 @@ DATABASES = {
         'NAME': 'aquila',
         'USER': 'think',
         'PASSWORD': '123456',
-        'HOST': '192.168.1.6',
+        'HOST': '192.168.1.51',
     }
 }
 

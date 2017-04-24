@@ -1,0 +1,23 @@
+<!--继承基础模板-->
+{% extends 'base.html' %}
+{% block css_flag %}
+    <link rel="stylesheet" href="/static/css/iframe_host_manage.css"/>
+{% endblock %}
+
+<!--修改基础模板中的 title 标签-->
+{% block title %}HostGroup Manage{% endblock %}
+
+    <!--修改主体标题-->
+    {% block body_title %}
+        HostGroup Manage
+    {% endblock %}
+
+    <!--修改主体内容-->
+    {% block body_body %}
+        <!--导入sql提交表单-->
+        {% include 'hostgroup.html' %}
+    {% endblock %}
+
+{% block jss_flag %}
+    <script src="/static/jss/backend.js"></script>
+{% endblock %}

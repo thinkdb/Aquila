@@ -72,7 +72,7 @@ def login(request):
             return res
         else:
             # 通过 ajax 返回用户名或者密码错误
-            return redirect("http://www.bing.com")
+            return render(request, 'login.html', {'user_error': '用户名或密码错误'})
     else:
         return render(request, 'login.html')
 

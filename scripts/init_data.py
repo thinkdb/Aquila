@@ -12,10 +12,10 @@ from cmdb import models
 
 # 初始化角色
 models.UserRole.objects.create(id=1, user_role_name='admin', user_role_jd='管理员')
-models.UserRole.objects.create(id=2, user_role_name='dba', user_role_jd='数据库管理员')
+models.UserRole.objects.create(id=2, user_role_name='users', user_role_jd='普通员工,默认值')
 models.UserRole.objects.create(id=3, user_role_name='qa', user_role_jd='测试')
 models.UserRole.objects.create(id=4, user_role_name='dev', user_role_jd='开发')
-models.UserRole.objects.create(id=5, user_role_name='users', user_role_jd='普通员工,默认值')
+models.UserRole.objects.create(id=5, user_role_name='dba', user_role_jd='数据库管理员')
 
 
 # 初始化用户组
@@ -29,7 +29,6 @@ models.HostGroup.objects.create(id=2, host_group_name='java', host_group_jd='jav
 
 
 # 初始化权限
-
 models.AuthPermissions.objects.create(
     id=1,
     select_host=1,
@@ -61,5 +60,5 @@ models.UserInfo.objects.create(
     user_emails='996846239@qq.com',
     role_id=1,
     user_group_id=1,
-    permission_id = 1
+    permission_id=1
 )

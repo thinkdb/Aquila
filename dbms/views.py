@@ -22,7 +22,7 @@ def index(request):
 
 @auth
 def inception(request):
-    user_cookie = request.COOKIES.get('userinfo')
+    user_cookie = request.get_signed_cookie('userinfo', salt='adfsfsdfsd')
     review_users = ['think', 'zhangsan', '2343', '23423', '23423423']
 
     if request.method == 'POST':

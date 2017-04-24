@@ -49,15 +49,12 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
                                 </div>
-                                <div class="form-group" style="display: none">
-                                    <span>Username:{err_fag}</span>
-                                </div>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                 </div>
 
-                                <div class="form-group" style="display: none">
-                                    <span>Password:{err_flag}</span>
+                                <div>
+                                    <span class="error_style">{{ user_error }}</span>
                                 </div>
                                 <div class="checkbox">
                                     <label>

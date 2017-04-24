@@ -2,10 +2,10 @@
  * Created by Administrator on 2017/3/11.
  */
 function close_error(argsss){
-    $('.'+argsss).removeClass('display_none');
+    $('.'+argsss).removeClass('check_dis_flag');
 }
 function add_error(argsss){
-	$('.'+argsss).addClass('display_none');
+	$('.'+argsss).addClass('check_dis_flag');
 }
 
 function auth_account(argsss){
@@ -28,9 +28,9 @@ function check_focus(){
 	}
 }
 
-function check_email(){
+function check_useremail(){
     // 检测邮箱
-    var email = $("#Email").val();
+    var email = $("#check_email").val();
     if(email){
 		var mailreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
 		var error_status = mailreg.test(email);
@@ -49,9 +49,9 @@ function check_email(){
 	}
 }
 
-function check_user(){
+function check_username(){
 	// 检测用户是否合法
-    var username = $("#username").val();
+    var username = $("#check_user").val();
     var namereg = /^[a-zA-Z]*([a-zA-Z0-9]|[_]){6,19}$/;
     var a = namereg.test(username);
     if(a){
@@ -62,11 +62,11 @@ function check_user(){
 	}
 }
 
-function check_pass(){
+function check_userpass(){
 	// 检测密码合法性
 	// 长度为 8 到 16 个字符
-	var username = $("#username").val();
-	var passwd = $("#password").val();
+	var username = $("#check_user").val();
+	var passwd = $("#check_user_pass").val();
 	if(passwd){
 		var pass_len=/^(\w){8,16}$/;
 		var pass_number = /^[\d]*$/;
@@ -75,11 +75,15 @@ function check_pass(){
 		var pass_no_num_flag = pass_number.test(passwd); //不能全为数字 f
 		var pass_no_char_flag = pass_char.test(passwd); // 不能全为字母 f
 		if(username == passwd){
-
+			close_error('prompt_pass');
 		}else if(pass_len_flag){
 			if(pass_no_num_flag==false && pass_no_char_flag==false){
 				add_error('prompt_pass');
-				return 1;
+				var email_status = check_useremail();
+				if (email_status){
+					$('#check_register_val').removeClass('disabled');
+					$('#check_register_val').removeAttr('onclick');
+				}
 			}else{
 				close_error('prompt_pass');
 			}
@@ -116,4 +120,8 @@ function check_disabled(){
 
 function check_commit(){
 	alert("succ");
+}
+
+function dis_submit(){
+	return false;
 }

@@ -46,25 +46,34 @@
                     <div class="panel-body">
                         <form role="form" action="{% url 'register' %}" method="post">
                             <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
-                                </div>
-                                <div class="form-group" style="display: none">
-                                    <span>Username:{err_fag}</span>
+                                <div>
+                                    <span>{{ user_exists }}</span>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Email" name="Email" type="email" autofocus>
+                                    <input id="check_user" class="form-control" placeholder="Username" name="username" type="text" onblur="check_username();" />
                                 </div>
-                                <div class="form-group" style="display: none">
-                                    <span>Email:{err_fag}</span>
+                                <div class="form-group prompt_user check_dis_flag" >
+                                    <span class="error_style">用户名以字母开头,只能包含下划线，长度为6到20个字符</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <input id="check_email" class="form-control" placeholder="Email" name="Email" type="email" onblur="check_useremail();">
+                                </div>
+                                <div class="form-group prompt_email check_dis_flag" >
+                                    <span class="error_style">邮箱格式错误或者内容不合法</span>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    <input id="check_user_pass" class="form-control" placeholder="Password" name="password" type="password" onblur="check_userpass();">
                                 </div>
-                                <div class="form-group" style="display: none">
-                                    <span>Password:{err_fag}</span>
+                                <div class="form-group prompt_pass check_dis_flag check_dis_flag">
+                                    <span class="error_style">密码由8到16个字符组成，必须由字母、数字、下划线组成</span>
                                 </div>
-                                <input type="submit" class="btn btn-lg btn-success btn-block" value="Register"/>
+                                <div>
+                                    <span>
+                                        {{ error_msg }}
+                                    </span>
+                                </div>
+                                <input id="check_register_val" type="submit" class="btn btn-lg btn-success btn-block disabled"  value="Register" onclick="return dis_submit();"/>
                             </fieldset>
                         </form>
                     </div>
@@ -74,6 +83,7 @@
     </div>
 
     <!-- jQuery -->
+    <script src="/static/jss/sign.js"></script>
     <script src="/static/vendor/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
@@ -84,6 +94,7 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="/static/jss/admin-2.js"></script>
+
 
 </body>
 

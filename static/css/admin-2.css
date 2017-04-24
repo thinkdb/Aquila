@@ -463,3 +463,11 @@ table.dataTable thead .sorting:after {
 .form-group-commit {
   margin-top: 10px;
 }
+
+.check_dis_flag{
+  display: none;
+}
+
+.error_style{
+  color: red;
+}

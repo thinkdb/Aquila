@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="18b6e737-4351-4bdc-832b-d2c3f9bc732a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmdb/views.py" afterPath="$PROJECT_DIR$/cmdb/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dbms/views.py" afterPath="$PROJECT_DIR$/dbms/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/ince_forms.html" afterPath="$PROJECT_DIR$/templates/ince_forms.html" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -61,13 +60,32 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dbms/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="96" column="33" selection-start-line="96" selection-start-column="33" selection-end-line="96" selection-end-column="33" />
+            <state relative-caret-position="1235">
+              <caret line="86" column="17" selection-start-line="86" selection-start-column="17" selection-end-line="86" selection-end-column="17" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
                 <element signature="e#343#705#0" expanded="false" />
-                <element signature="e#741#3851#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="inception.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/inception.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="266">
+              <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ince_forms.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/ince_forms.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -84,11 +102,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cmdb/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
-              <caret line="101" column="13" selection-start-line="101" selection-start-column="13" selection-end-line="101" selection-end-column="13" />
+            <state relative-caret-position="887">
+              <caret line="164" column="83" selection-start-line="164" selection-start-column="83" selection-end-line="164" selection-end-column="83" />
               <folding>
                 <element signature="e#3502#5540#0" expanded="false" />
               </folding>
@@ -145,7 +163,6 @@
         <option value="$PROJECT_DIR$/dbms/models.py" />
         <option value="$PROJECT_DIR$/scripts/init.py" />
         <option value="$PROJECT_DIR$/cmdb/models.py" />
-        <option value="$PROJECT_DIR$/templates/ince_forms.html" />
         <option value="$PROJECT_DIR$/Aquila/urls.py" />
         <option value="$PROJECT_DIR$/scripts/init_data.py" />
         <option value="$PROJECT_DIR$/Aquila/settings.py" />
@@ -155,6 +172,7 @@
         <option value="$PROJECT_DIR$/static/css/admin-2.css" />
         <option value="$PROJECT_DIR$/dbms/views.py" />
         <option value="$PROJECT_DIR$/cmdb/views.py" />
+        <option value="$PROJECT_DIR$/templates/ince_forms.html" />
       </list>
     </option>
   </component>
@@ -1039,22 +1057,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/ince_forms.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="52" column="50" selection-start-line="52" selection-start-column="50" selection-end-line="52" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/inception.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -1123,25 +1125,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dbms/views.py">
+    <entry file="file://$PROJECT_DIR$/cmdb/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="96" column="33" selection-start-line="96" selection-start-column="33" selection-end-line="96" selection-end-column="33" />
+        <state relative-caret-position="887">
+          <caret line="164" column="83" selection-start-line="164" selection-start-column="83" selection-end-line="164" selection-end-column="83" />
           <folding>
-            <element signature="e#0#45#0" expanded="true" />
-            <element signature="e#343#705#0" expanded="false" />
-            <element signature="e#741#3851#0" expanded="false" />
+            <element signature="e#3502#5540#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cmdb/views.py">
+    <entry file="file://$PROJECT_DIR$/templates/inception.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="101" column="13" selection-start-line="101" selection-start-column="13" selection-end-line="101" selection-end-column="13" />
+        <state relative-caret-position="266">
+          <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dbms/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1235">
+          <caret line="86" column="17" selection-start-line="86" selection-start-column="17" selection-end-line="86" selection-end-column="17" />
           <folding>
-            <element signature="e#3502#5540#0" expanded="false" />
+            <element signature="e#0#45#0" expanded="true" />
+            <element signature="e#343#705#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/ince_forms.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

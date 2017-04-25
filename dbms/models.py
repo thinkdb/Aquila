@@ -5,9 +5,9 @@ from django.db import models
 class MysqlBackupSourceInfo(models.Model):
     id = models.AutoField(primary_key=True)
     generator_room_name = models.CharField(max_length=30)
-    ipaddr = models.IntegerField()
-    port = models.SmallIntegerField()
-    service_level = models.SmallIntegerField()
+    ipaddr = models.UnsignedIntegerField()
+    port = models.UnsignedSmallIntegerField()
+    service_level = models.TinyIntegerField()
     defaults_file = models.CharField(max_length=100)
     back_time = models.TimeField()
     transport_time = models.TimeField(default='1980-01-01 01:01:01')
@@ -24,7 +24,7 @@ class BackupPoolInfo(models.Model):
     id = models.AutoField(primary_key=True)
     pool_name = models.CharField(max_length=50)
     ipaddr = models.IntegerField()
-    port = models.SmallIntegerField()
+    port = models.UnsignedSmallIntegerField()
     passwd = models.CharField(max_length=50)
     username = models.CharField(max_length=50)
 
@@ -37,7 +37,7 @@ class BackupedBinlogInfo(models.Model):
     machine_id = models.ForeignKey('MysqlBackupSourceInfo', on_delete=models.CASCADE)
     binlog_name = models.CharField(max_length=50)
     binlog_create_time = models.DateTimeField()
-    binlog_size = models.SmallIntegerField()
+    binlog_size = models.UnsignedSmallIntegerField()
     r_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -50,13 +50,13 @@ class BackupedInfo(models.Model):
     machine_id = models.ForeignKey('MysqlBackupSourceInfo', on_delete=models.CASCADE)
     backup_name = models.CharField(max_length=100)
     backup_file_path = models.CharField(max_length=100)
-    backup_druation = models.SmallIntegerField()
-    backup_status = models.SmallIntegerField()
+    backup_druation = models.UnsignedSmallIntegerField()
+    backup_status = models.TinyIntegerField()
     binlog_file_path = models.CharField(max_length=100)
     binlog_index = models.CharField(max_length=100)
     binlog_start = models.CharField(max_length=50)
     binlog_end = models.CharField(max_length=50)
-    binlog_backup_status = models.SmallIntegerField(default=0)
+    binlog_backup_status = models.TinyIntegerField(default=0)
     binlog_backup_piece = models.CharField(max_length=50)
     r_time = models.DateTimeField(auto_now_add=True)
 
@@ -75,8 +75,8 @@ class InceptionWorkOrderInfo(models.Model):
     end_time = models.DateTimeField(default='1980-01-01 01:01:01')
     review_user = models.CharField(max_length=50)
     review_time = models.DateTimeField(default='1980-01-01 01:01:01')
-    review_status = models.SmallIntegerField(default=10)
-    work_status = models.SmallIntegerField(default=10)
+    review_status = models.TinyIntegerField(default=10)
+    work_status = models.TinyIntegerField(default=10)
     r_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -86,18 +86,18 @@ class InceptionWorkOrderInfo(models.Model):
 class InceptionAuditDetail(models.Model):
     id = models.AutoField(primary_key=True)
     work_order = models.ForeignKey('InceptionWorkOrderInfo', on_delete=models.CASCADE, to_field='work_order_id')
-    sql_sid = models.SmallIntegerField()
-    status = models.SmallIntegerField()
-    err_id = models.SmallIntegerField()
-    stage_status = models.SmallIntegerField()
-    error_msg = models.CharField(max_length=1000)
-    sql_conten = models.CharField(max_length=1000)
-    aff_row = models.SmallIntegerField()
-    rollback_id = models.CharField(max_length=50)
-    backup_dbname = models.CharField(max_length=100)
-    execute_time = models.IntegerField()
-    sql_hash = models.CharField(max_length=50)
-    r_time = models.DateTimeField(auto_now_add=True)
+    sql_sid = models.UnsignedSmallIntegerField()              # 工单中的sql序号
+    status = models.UnsignedSmallIntegerField()               # RERUN,CHECKED, EXECUTED, None
+    err_id = models.UnsignedSmallIntegerField()               # 0, 1, 2
+    stage_status = models.UnsignedSmallIntegerField()         # Execute Successfully, Execute Successfully\nBackup successfully, Execute Successfully\nBackup filed
+    error_msg = models.CharField(max_length=1000)     # None, str,
+    sql_content = models.CharField(max_length=1000)   # sql内容
+    aff_row = models.UnsignedSmallIntegerField()              # 影响的行数
+    rollback_id = models.CharField(max_length=50)     # rollback_id
+    backup_dbname = models.CharField(max_length=100)  # 存放备份的库名
+    execute_time = models.IntegerField()              # sql 执行好时，*1000， 按毫秒存放
+    sql_hash = models.CharField(max_length=50)        # 用于 使用pt-osc 工具时查看进度, None
+    r_time = models.DateTimeField(auto_now_add=True)  # 记录生成时间
 
     class Meta:
         db_table = 'dbms_ince_audit_detail'

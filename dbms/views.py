@@ -20,6 +20,7 @@ def index(request):
 
     return render(request, 'index.html', {'userinfo': user_cookie})
 
+
 @auth
 def inception(request):
     user_cookie = get_user_cookie(request)
@@ -55,33 +56,34 @@ def inception(request):
                     sql_content=sql_content,
                     work_order_id=w_id
                 )
-                for item in result:
-                    # 修改数据类型， str to  int
-                    sql_sid = item[0]
-                    status = item[1]
-                    err_id = item[2]
-                    stage_status = item[3]
-                    error_msg = item[4]
-                    sql_conten = item[5]
-                    aff_row = item[6]
-                    rollback_ip = item[7]
-                    backup_dbname = item[8]
-                    execute_time = item[9]
-                    sql_hash = item[10]
-                    new = InceptionAuditDetail()
-                    new.work_order_id = w_id
-                    new.sql_sid = sql_sid
-                    new.status = status
-                    new.err_id = err_id
-                    new.stage_status = stage_status
-                    new.error_msg = error_msg
-                    new.sql_conten = sql_conten
-                    new.aff_row = aff_row
-                    new.rollback_id = rollback_ip
-                    new.backup_dbname = backup_dbname
-                    new.execute_time = execute_time
-                    new.sql_hash = sql_hash
-                    new.save()
+                print(result)
+                # for item in result:
+                #     # 修改数据类型， str to  int
+                #     sql_sid = item[0]
+                #     status = item[1]
+                #     err_id = item[2]
+                #     stage_status = item[3]
+                #     error_msg = item[4]
+                #     sql_content = item[5]
+                #     aff_row = item[6]
+                #     rollback_ip = item[7]
+                #     backup_dbname = item[8]
+                #     execute_time = item[9]
+                #     sql_hash = item[10]
+                #     new = InceptionAuditDetail()
+                #     new.work_order_id = w_id
+                #     new.sql_sid = sql_sid
+                #     new.status = status
+                #     new.err_id = err_id
+                #     new.stage_status = stage_status
+                #     new.error_msg = error_msg
+                #     new.sql_conten = sql_conten
+                #     new.aff_row = aff_row
+                #     new.rollback_id = rollback_ip
+                #     new.backup_dbname = backup_dbname
+                #     new.execute_time = execute_time
+                #     new.sql_hash = sql_hash
+                #     new.save()
 
                 return render(request, 'inception.html', {'ince_result': result, 'review_users': review_users, 'userinfo': user_cookie})
             else:

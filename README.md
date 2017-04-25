@@ -58,8 +58,15 @@ DATABASES = {
 
 
 #### 4. 使用 inception 功能时，需要修改pymysql工具的源码， 修改如下：
-C:\Python35\Lib\site-packages\pymysql\connections.py 在1109 行前面添加如下内容，
-只要把第一个点前面改成 大于等于5就行
+C:\Python35\Lib\site-packages\pymysql\connections.py 在1071 行前面添加如下内容，
+只要把第一个点前面改成 大于等于5就行,
 ```
 self.server_version = '5.7.18-log'
+```
+
+#### 5. 获取具体的语法错误内容
+修改C:\python35\Lib\site-packages\pymysql\cursors.py 334行内容
+```
+        if self._result:
+        #if self._result and (self._result.has_next or not self._result.warning_count):
 ```

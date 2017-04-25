@@ -1,7 +1,7 @@
 #!/bin/env python3
 # _*_ coding:utf8 _*_
 
-import pymysql as pytmysqldb
+import pymysql as pymysqldb
 import paramiko
 import socket
 import struct
@@ -11,8 +11,8 @@ import time
 
 class DBAPI(object):
     def __init__(self, host, user, password, port, database):
-        self.conn = pytmysqldb.connect(host=host, user=user, passwd=password, port=int(port),
-                                       database=database, autocommit=0, charset='utf8')
+        self.conn = pymysqldb.connect(host=host, user=user, passwd=password, port=int(port),
+                                       database=database, autocommit=1, charset='utf8')
         self.cur = self.conn.cursor()
 
     def conn_query(self, sql):
@@ -76,8 +76,8 @@ class FtpServer(object):
 
 
 def inception_sql(db_host, db_user, db_passwd, sql_content, db_port=3306,
-                  enable_check=1, enable_execute=0,
-                  enable_ignore_warnings=0, sleep=500):
+                  enable_check=1, enable_execute=1,
+                  enable_ignore_warnings=1, sleep=500):
     """
     :param db_host: DB_HOST where the database server is located
     :param db_user: DB_USER to log in as
@@ -101,12 +101,12 @@ def inception_sql(db_host, db_user, db_passwd, sql_content, db_port=3306,
     return ince_run_sql
 
 
-def ince_run_sql(db_host, sql_content, enable_execute=0, enable_ignore_warnings=0, port=3306):
+def ince_run_sql(db_host, sql_content, enable_execute=1, enable_ignore_warnings=1, port=3306):
 
     run_sql = inception_sql(db_user='think', db_passwd='123456', db_host=db_host, sql_content=sql_content, db_port=port,
                             enable_execute=enable_execute, enable_ignore_warnings=enable_ignore_warnings)
     try:
-        db = DBAPI(host='192.168.1.51', user='', password='', database='', port=6669)
+        db = DBAPI(host='192.168.1.6', user='', password='', database='', port=6669)
         result = db.conn_query(run_sql)
     except Exception as e:
         result = e

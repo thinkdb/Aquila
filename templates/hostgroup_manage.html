@@ -1,8 +1,12 @@
 <!--继承基础模板-->
 {% extends 'base.html' %}
-{% block css_flag %}
+    {% block css_flag %}
     <link rel="stylesheet" href="/static/css/iframe_host_manage.css"/>
-{% endblock %}
+        <link href="/static/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="/static/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+    {% endblock %}
 
 <!--修改基础模板中的 title 标签-->
 {% block title %}HostGroup Manage{% endblock %}
@@ -19,5 +23,8 @@
     {% endblock %}
 
 {% block jss_flag %}
-    <script src="/static/jss/backend.js"></script>
+    <script src="/static/vendor/datatables/js/jquery.dataTables.js"></script>
+    <script src="/static/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="/static/vendor/datatables-responsive/dataTables.responsive.js"></script>
+    <script src="/static/jss/host_opertion.js"></script>
 {% endblock %}

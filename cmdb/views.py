@@ -168,6 +168,26 @@ def test(request):
 def hostgroup_manage(request):
     user_cookie = get_user_cookie(request)
     result = cmdb_models.HostGroup.objects.all()
+    hostgroup_list = []
     if result:
         hostgroup_list = result
     return render(request, 'hostgroup_manage.html', {'userinfo': user_cookie, 'hostgroup_list': hostgroup_list})
+
+
+def hostgroup_append(request):
+    group_name = request.POST.get('groupname', None)
+    group_desc = request.POST.get('groupdesc', None)
+    import json
+    if group_name:
+        result = cmdb_models.HostGroup.objects.filter(host_group_name=group_name)
+        if result:
+            result_dict = {'flag': 0, 'msg': 'GroupName: %s already exist' % group_name}
+        else:
+            cmdb_models.HostGroup.objects.create(
+                host_group_name=group_name,
+                host_group_jd=group_desc
+            )
+            result_dict = {'flag': 1, 'msg': 'GroupName: %s append successful' % group_name}
+    else:
+        result_dict = {'flag': 0, 'msg': 'GroupName: is None'}
+    return HttpResponse(json.dumps(result_dict))

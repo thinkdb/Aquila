@@ -185,17 +185,17 @@ table.dataTable thead .sorting_desc_disabled {
   background: transparent;
 }
 table.dataTable thead .sorting_asc:after {
-  content: "\f0de";
+  /*content: "\f0de";*/
   float: right;
   font-family: fontawesome;
 }
 table.dataTable thead .sorting_desc:after {
-  content: "\f0dd";
+  /*content: "\f0dd";*/
   float: right;
   font-family: fontawesome;
 }
 table.dataTable thead .sorting:after {
-  content: "\f0dc";
+  /*content: "\f0dc";*/
   float: right;
   font-family: fontawesome;
   color: rgba(50, 50, 50, 0.5);
@@ -436,38 +436,41 @@ table.dataTable thead .sorting:after {
   text-decoration:none;
   padding-left: 50px;
 }
-
 .control-group {
   padding-left: 20px;
   padding-bottom:20px;
 }
-
 .Ince-input-group {
   width: 200px;
   display: inline;
 }
-
 .Ince-input-group2 {
   width: 600px;
 }
-
-
 .ince_content_input div{
   display: inline-block;
 }
-
 .ince_content_right {
   padding-left: 20px;
 }
-
 .form-group-commit {
   margin-top: 10px;
 }
-
 .check_dis_flag{
   display: none;
 }
-
 .error_style{
   color: red;
 }
+.shade_layer{
+  z-index: 1000;
+  /*background-color: initial;*/
+  background-color: rgba(0, 0, 0, 0.5);
+  /*opacity:0.9;*/
+  position: fixed;
+  top: 0;
+  left: 0;
+  right:0;
+  bottom:0;
+}
+

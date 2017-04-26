@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^user', views.user_manager, name='user_manager'),
     #url(r'^test', views.test, name='test'),
     #url(r'^test', views.AuthAll.as_view(), name='test'),
-    url(r'hostgroup_manage', views.hostgroup_manage, name='hostgroup_manage')
+    url(r'hostgroup_manage', views.hostgroup_manage, name='hostgroup_manage'),
+    url(r'hostgroup_append', views.hostgroup_append, name='cmdb_hostgroup_append')
 ]

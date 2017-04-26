@@ -473,4 +473,12 @@ table.dataTable thead .sorting:after {
   right:0;
   bottom:0;
 }
-
+#exit_edit{
+  padding: 9px;
+  position: absolute;
+  right: 20px;
+  margin-top: -12px;
+}
+#exit_edit:hover{
+  cursor: pointer;
+}

@@ -4,6 +4,13 @@
 $(function(){
     $('#host_group_append').click(function () {
         $('.shade_layer').removeClass('check_dis_flag');
+        $.ajax({
+            url: '/cmdb/hostgroup_manage',
+            type: 'POST',
+            data: {'host_edit': "{% include 'hostgroup_append.html' %}"},
+            dataType: 'json'
+        })
+
     });
 
     $('#host_group_update').click(function () {
@@ -34,3 +41,10 @@ $('#group_add_button').click(function () {
         }
     })
 });
+
+
+$('#exit_edit').click(function () {
+    $('.shade_layer').addClass('check_dis_flag');
+});
+
+// 动态添加 模态对话框

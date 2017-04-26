@@ -1,5 +1,6 @@
 # Aquila
 
+### 准备工作
 #### 1. 在 `C:\python35\Lib\site-packages\django\db\models\fields\fields.py` 中添加如下内容,用于支持无符号的整型
 ```
 class TinyIntegerField(SmallIntegerField, Field):
@@ -25,6 +26,11 @@ class UnTinyIntAuto(PositiveTinyIntegerField):
 class UnsignedIntegerField(IntegerField):
     def db_type(self, connection):
         return "integer UNSIGNED"
+
+
+class UnsignedSmallIntegerField(SmallIntegerField):
+    def db_type(self, connection):
+        return "integer UNSIGNED"
 ```
 同时替换如下内容：
 ```
@@ -37,9 +43,10 @@ __all__ = [str(x) for x in (
     'NOT_PROVIDED', 'NullBooleanField', 'PositiveIntegerField',
     'PositiveSmallIntegerField', 'SlugField', 'SmallIntegerField', 'TextField',
     'TimeField', 'URLField', 'UUIDField','UnsignedIntegerField','TinyIntegerField',
-    'PositiveTinyIntegerField','UnsignedIntegerField','UnTinyIntAuto',
+    'PositiveTinyIntegerField','UnsignedIntegerField','UnTinyIntAuto','UnsignedSmallIntegerField',
 )]
 ```
+
 #### 2. 修改数据连接信息， 修改Aquila下的settions.py 文件内容
 根据你的实际地址修改
 ```
@@ -64,7 +71,7 @@ C:\Python35\Lib\site-packages\pymysql\connections.py 在1071 行前面添加如�
 self.server_version = '5.7.18-log'
 ```
 
-#### 5. 获取具体的语法错误内容
+#### 5. 通过 inception 工具执行语句时获取具体sql的语法错误内容
 修改C:\python35\Lib\site-packages\pymysql\cursors.py 334行内容
 ```
         if self._result:

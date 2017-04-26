@@ -166,12 +166,15 @@ def test(request):
 
 
 def hostgroup_manage(request):
+
     user_cookie = get_user_cookie(request)
+    host_edit = request.POST.get('host_edit', '' )
     result = cmdb_models.HostGroup.objects.all()
     hostgroup_list = []
+
     if result:
         hostgroup_list = result
-    return render(request, 'hostgroup_manage.html', {'userinfo': user_cookie, 'hostgroup_list': hostgroup_list})
+    return render(request, 'hostgroup_manage.html', {'userinfo': user_cookie, 'hostgroup_list': hostgroup_list, 'host_edit': host_edit  })
 
 
 def hostgroup_append(request):

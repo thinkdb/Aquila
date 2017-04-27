@@ -6,7 +6,10 @@
                 <form id="form" role="form"  method="post">
                     <fieldset style="opacity:1">
                         <div><i id="exit_edit" class="fa fa-times" aria-hidden="true"></i></div>
-{#                            {% include 'hostgroup_append.html' %}#}
+                        {% if i == 1%}
+                            {% include 'hostgroup_append.html' %}
+                        {% endif %}
+
                         {{ host_edit }}
                         <input id="group_add_button" type="button" class="btn btn-lg btn-primary btn-block"  value="Commit"/>
                     </fieldset>

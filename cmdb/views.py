@@ -26,6 +26,7 @@ def auth(func):
                 return redirect('/cmdb/login')
             return func(request, *args, **kwargs)
         except Exception as e:
+            print(e)
             return redirect('/cmdb/login')
     return inner
 
@@ -168,13 +169,13 @@ def test(request):
 def hostgroup_manage(request):
 
     user_cookie = get_user_cookie(request)
-    host_edit = request.POST.get('host_edit', '' )
+    host_edit = request.POST.get('host_edit', '')
     result = cmdb_models.HostGroup.objects.all()
     hostgroup_list = []
 
     if result:
         hostgroup_list = result
-    return render(request, 'hostgroup_manage.html', {'userinfo': user_cookie, 'hostgroup_list': hostgroup_list, 'host_edit': host_edit  })
+    return render(request, 'hostgroup_manage.html', {'userinfo': user_cookie, 'hostgroup_list': hostgroup_list, 'host_edit': host_edit})
 
 
 def hostgroup_append(request):

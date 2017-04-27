@@ -22,10 +22,9 @@ def index(request):
 
 
 @auth
-def inception(request):
+def sql_commit(request):
     user_cookie = get_user_cookie(request)
     review_users = ['think', 'zhangsan', '2343', '23423', '23423423']
-
     if request.method == 'POST':
         host_ip = request.POST.get('dbhost', None)
         db_name = request.POST.get('dbname', None)
@@ -37,13 +36,14 @@ def inception(request):
         if host_ip and db_name and db_port and review_user and sql_content:
             # 审核 sql
             sql_content = sql_content.rstrip()
-            result = functions.ince_run_sql(host_ip, sql_content, port=db_port)
+            result = functions.ince_run_sql(host_ip, sql_content, db_port=db_port, db_user='think', db_passwd='123456',
+                                            ince_host='192.168.1.6', ince_port=6669)
 
             # 检查语法问题
             if type(result) == tuple:
                 # 工单信息入库
                 w_id = functions.get_uuid()
-                work_user = 'think'
+                work_user = user_cookie
                 db_ip = functions.num2ip('num', host_ip)
                 dbms_models.InceptionWorkOrderInfo.objects.create(
                     work_order_id=w_id,
@@ -56,35 +56,48 @@ def inception(request):
                     sql_content=sql_content,
                     work_order_id=w_id
                 )
-                print(result)
-                # for item in result:
-                #     # 修改数据类型， str to  int
-                #     sql_sid = item[0]
-                #     status = item[1]
-                #     err_id = item[2]
-                #     stage_status = item[3]
-                #     error_msg = item[4]
-                #     sql_content = item[5]
-                #     aff_row = item[6]
-                #     rollback_ip = item[7]
-                #     backup_dbname = item[8]
-                #     execute_time = item[9]
-                #     sql_hash = item[10]
-                #     new = InceptionAuditDetail()
-                #     new.work_order_id = w_id
-                #     new.sql_sid = sql_sid
-                #     new.status = status
-                #     new.err_id = err_id
-                #     new.stage_status = stage_status
-                #     new.error_msg = error_msg
-                #     new.sql_conten = sql_conten
-                #     new.aff_row = aff_row
-                #     new.rollback_id = rollback_ip
-                #     new.backup_dbname = backup_dbname
-                #     new.execute_time = execute_time
-                #     new.sql_hash = sql_hash
-                #     new.save()
-
+                for item in result:
+                    sql_sid = item[0]
+                    if item[1] == 'CHECKED':
+                        status = 0
+                    elif item[1] == 'EXECUTED':
+                        status = 1
+                    elif item[1] == 'RERUN':
+                        status = 2
+                    else:
+                        status = 3
+                    err_id = item[2]
+                    if item[3] == 'Audit completed':
+                        stage_status = 0
+                    elif item[3] == 'Execute failed':
+                        stage_status = 1
+                    elif item[3] == 'Execute Successfully':
+                        stage_status = 2
+                    elif item[4] == 'Execute Successfully\nBackup successfully':
+                        stage_status = 3
+                    else:
+                        stage_status = 4
+                    error_msg = item[4]
+                    sql_content = item[5]
+                    aff_row = item[6]
+                    rollback_ip = item[7]
+                    backup_dbname = item[8]
+                    execute_time = int(float(item[9])*1000)
+                    sql_hash = item[10]
+                    new = InceptionAuditDetail()
+                    new.work_order_id = w_id
+                    new.sql_sid = sql_sid
+                    new.status = status
+                    new.err_id = err_id
+                    new.stage_status = stage_status
+                    new.error_msg = error_msg
+                    new.sql_content = sql_content
+                    new.aff_row = aff_row
+                    new.rollback_id = rollback_ip
+                    new.backup_dbname = backup_dbname
+                    new.execute_time = execute_time
+                    new.sql_hash = sql_hash
+                    new.save()
                 return render(request, 'inception.html', {'ince_result': result, 'review_users': review_users, 'userinfo': user_cookie})
             else:
                 context = (('None', 0, 0, 0, "语法错误", sql_content),)
@@ -93,6 +106,16 @@ def inception(request):
             return render(request, 'inception.html', {'review_users': review_users, 'userinfo': user_cookie})
     else:
         return render(request, 'inception.html', {'review_users': review_users, 'userinfo': user_cookie})
+
+
+@auth
+def sql_audit(request):
+    user_name = get_user_cookie(request)
+    user_work_order_list = dbms_models.InceptionWorkOrderInfo.objects.filter(work_user=user_name)
+    # 使用多表关联， __ 反向查找
+    print(user_work_order_list)
+    return render(request, 'ince_sql_audit.html', {'userinfo': user_name})
+
 
 @auth
 def backup(request):

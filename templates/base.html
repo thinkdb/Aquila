@@ -46,7 +46,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Aquila OS</a>
+                <a class="navbar-brand" href="{% url 'index' %}">Aquila OS</a>
             </div>
             <ul class="nav navbar-top-links navbar-right">
                 <li><a href="{% url 'login' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -135,10 +135,16 @@
                                     <a>SQL 发布<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="{% url 'inception' %}">SQL 审核</a>
+                                            <a href="{% url 'dbms_sql_commit' %}">SQL 提交</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'dbms_sql_audit' %}">SQL 审核</a>
                                         </li>
                                         <li>
                                             <a href="#">SQL 执行</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">工单查询</a>
                                         </li>
                                     </ul>
                                 </li>

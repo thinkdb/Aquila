@@ -76,8 +76,8 @@ class FtpServer(object):
 
 
 def inception_sql(db_host, db_user, db_passwd, sql_content, db_port=3306,
-                  enable_check=1, enable_execute=1,
-                  enable_ignore_warnings=1, sleep=500):
+                  enable_check=1, enable_execute=0, enable_split=0,
+                  enable_ignore_warnings=0, sleep=500):
     """
     :param db_host: DB_HOST where the database server is located
     :param db_user: DB_USER to log in as
@@ -92,21 +92,29 @@ def inception_sql(db_host, db_user, db_passwd, sql_content, db_port=3306,
     :return: Returns a SQL content that can be supported by Inception
     """
     ince_run_sql = """/*--user=%s;--password=%s;--host=%s;--port=%s;--enable-check=%s;--enable-execute=%s;
-            --enable-ignore-warnings=%s;--sleep=%s;*/
+            --enable-ignore-warnings=%s;--sleep=%s;--enable-split=%s;*/
             inception_magic_start;
             %s
             inception_magic_commit;
             """ % (db_user, db_passwd, db_host, db_port, enable_check,
-                   enable_execute, enable_ignore_warnings, sleep, sql_content)
+                   enable_execute, enable_ignore_warnings, sleep, enable_split, sql_content)
     return ince_run_sql
 
 
-def ince_run_sql(db_host, sql_content, enable_execute=1, enable_ignore_warnings=1, port=3306):
-
-    run_sql = inception_sql(db_user='think', db_passwd='123456', db_host=db_host, sql_content=sql_content, db_port=port,
-                            enable_execute=enable_execute, enable_ignore_warnings=enable_ignore_warnings)
+def ince_run_sql(db_host, sql_content, db_user, db_passwd, ince_host, ince_port, db_port=3306, enable_check=1,
+                 enable_execute=0, enable_split=0, enable_ignore_warnings=0, sleep=500):
+    """
+    Connect Inception to execute SQL
+    :param db_host:  DB_HOST where the database server is located
+    :param sql_content: SQL content to execute
+    :param port: MySQL port to use, default is usually OK. (default: 3306)
+    :return:
+    """
+    run_sql = inception_sql(db_user=db_user, db_passwd=db_passwd, db_host=db_host, sql_content=sql_content, db_port=db_port,
+                            enable_check=enable_check, enable_execute=enable_execute, enable_split=enable_split,
+                            enable_ignore_warnings=enable_ignore_warnings, sleep=sleep)
     try:
-        db = DBAPI(host='192.168.1.6', user='', password='', database='', port=6669)
+        db = DBAPI(host=ince_host, user='', password='', database='', port=ince_port)
         result = db.conn_query(run_sql)
     except Exception as e:
         result = e
@@ -115,7 +123,7 @@ def ince_run_sql(db_host, sql_content, enable_execute=1, enable_ignore_warnings=
 
 def get_uuid():
     """
-    生成唯一的工单编号
+    Generate unique work order number
     """
     import random
     st = int(time.time() * 1000)
@@ -125,7 +133,7 @@ def get_uuid():
 
 def get_ip():
     """
-    获取ip地址
+    Get IP address
     """
     ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
     aid = re.sub('\.', '_', ip)
@@ -133,10 +141,12 @@ def get_ip():
 
 
 def num2ip(arg, int_ip):
+    """
+    IP address and number conversion
+    """
     if arg == 'ip':
         ip = socket.inet_ntoa(struct.pack('I', socket.htonl(int_ip)))
     else:
         ip = str(socket.ntohl(struct.unpack('I', socket.inet_aton(int_ip))[0]))
-
     return ip
 

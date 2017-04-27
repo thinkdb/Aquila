@@ -25,12 +25,11 @@ class UnTinyIntAuto(PositiveTinyIntegerField):
 
 class UnsignedIntegerField(IntegerField):
     def db_type(self, connection):
-        return "integer UNSIGNED"
-
+        return "int UNSIGNED"
 
 class UnsignedSmallIntegerField(SmallIntegerField):
     def db_type(self, connection):
-        return "integer UNSIGNED"
+        return "smallint UNSIGNED"
 ```
 同时替换如下内容：
 ```

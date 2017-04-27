@@ -1,0 +1,68 @@
+<!--继承基础模板-->
+{% extends 'base.html' %}
+
+    {% block css_flag %}
+    <link rel="stylesheet" href="/static/css/iframe_host_manage.css"/>
+        <link href="/static/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="/static/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+    {% endblock %}
+
+<!--修改基础模板中的 title 标签-->
+{% block title %}SQL发布{% endblock %}
+
+    <!--修改主体标题-->
+    {% block body_title %}
+        Inception/SQL 审核
+    {% endblock %}
+
+    <!--修改主体内容-->
+    {% block body_body %}
+        <div class="panel-body">
+            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <thead>
+                    <tr>
+                        <th>工单号</th>
+                        <th>发起人</th>
+                        <th>发起时间</th>
+                        <th>主机</th>
+                        <th>工单内容</th>
+                        <th>影响数据行数</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% if hostgroup_list %}
+                        {% for item in work_order_list %}
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>{{ item.host_group_name }}</td>
+                                <td>{{ item.host_group_jd }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        审核 <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                        <li><a href="#">通过</a></li>
+                                        <li><a href="#">驳回</a></li>
+                                      </ul>
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+{% block jss_flag %}
+    <script src="/static/vendor/datatables/js/jquery.dataTables.js"></script>
+    <script src="/static/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="/static/vendor/datatables-responsive/dataTables.responsive.js"></script>
+    <script src="/static/jss/host_opertion.js"></script>
+{% endblock %}

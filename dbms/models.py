@@ -90,14 +90,14 @@ class InceptionAuditDetail(models.Model):
     status = models.UnsignedSmallIntegerField()               # RERUN,CHECKED, EXECUTED, None
     err_id = models.UnsignedSmallIntegerField()               # 0, 1, 2
     stage_status = models.UnsignedSmallIntegerField()         # Execute Successfully, Execute Successfully\nBackup successfully, Execute Successfully\nBackup filed
-    error_msg = models.CharField(max_length=1000)     # None, str,
-    sql_content = models.CharField(max_length=1000)   # sql内容
+    error_msg = models.CharField(max_length=1000)             # None, str,
+    sql_content = models.CharField(max_length=1000)           # sql内容
     aff_row = models.UnsignedSmallIntegerField()              # 影响的行数
-    rollback_id = models.CharField(max_length=50)     # rollback_id
-    backup_dbname = models.CharField(max_length=100)  # 存放备份的库名
-    execute_time = models.IntegerField()              # sql 执行好时，*1000， 按毫秒存放
-    sql_hash = models.CharField(max_length=50)        # 用于 使用pt-osc 工具时查看进度, None
-    r_time = models.DateTimeField(auto_now_add=True)  # 记录生成时间
+    rollback_id = models.CharField(max_length=50)             # rollback_id
+    backup_dbname = models.CharField(max_length=100)          # 存放备份的库名
+    execute_time = models.IntegerField()                      # sql 执行好时，*1000， 按毫秒存放
+    sql_hash = models.CharField(max_length=50)                # 用于 使用pt-osc 工具时查看进度, None
+    r_time = models.DateTimeField(auto_now_add=True)         # 记录生成时间
 
     class Meta:
         db_table = 'dbms_ince_audit_detail'

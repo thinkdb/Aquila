@@ -166,6 +166,8 @@ def test(request):
     return render(request, 'test.html', {'data_page': data, 'page_str': page_html})
 
 
+
+@auth
 def hostgroup_manage(request):
 
     user_cookie = get_user_cookie(request)
@@ -178,6 +180,7 @@ def hostgroup_manage(request):
     return render(request, 'hostgroup_manage.html', {'userinfo': user_cookie, 'hostgroup_list': hostgroup_list, 'host_edit': host_edit})
 
 
+@auth
 def hostgroup_append(request):
     group_name = request.POST.get('groupname', None)
     group_desc = request.POST.get('groupdesc', None)

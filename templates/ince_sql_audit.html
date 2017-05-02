@@ -27,19 +27,18 @@
                         <th>发起人</th>
                         <th>发起时间</th>
                         <th>主机</th>
-                        <th>工单内容</th>
-                        <th>影响数据行数</th>
                         <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    {% if hostgroup_list %}
+                    {% if work_order_list %}
                         {% for item in work_order_list %}
                             <tr>
-                                <td><input type="checkbox"></td>
-                                <td>{{ item.host_group_name }}</td>
-                                <td>{{ item.host_group_jd }}</td>
+                                <td><a href="#">{{ item.work_order_id }}</a></td>
+                                <td>{{ item.work_user }}</td>
+                                <td>{{ item.r_time }}</td>
+                                <td id="num_to_ip">{{ item.db_host }}</td>
                                 <td>
                                     <div class="btn-group">
                                       <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

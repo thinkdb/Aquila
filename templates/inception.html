@@ -16,19 +16,19 @@
             <div class="ince_content_input">
                 <div>
                     <label for="host_id">主库地址</label>
-                    <input class="form-control Ince-input-group" placeholder="Enter text" id="host_id" name="dbhost">
+                    <input class="form-control Ince-input-group" placeholder="Enter text" id="dbhost" name="dbhost">
                 </div>
                 <div>
                     <label for="host_port">端口</label>
-                    <input class="form-control Ince-input-group" placeholder="Enter text" id="host_port" name="dbport">
+                    <input class="form-control Ince-input-group" placeholder="Enter text" id="dbport" name="dbport">
                 </div>
                 <div>
                     <label for="db_name">库名</label>
-                    <input class="form-control Ince-input-group" placeholder="Enter text" id="db_name" name="dbname">
+                    <input class="form-control Ince-input-group" placeholder="Enter text" id="dbname" name="dbname">
                 </div>
                 <div>
                     <label for="review_user">审核人</label>
-                    <select class="form-control Ince-input-group" id="review_user" name="select_user">
+                    <select class="form-control Ince-input-group" id="select_user" name="select_user">
                         {% for item in review_users %}
                             <option value="{{ item }}">{{ item }}</option>
                         {% endfor %}
@@ -38,10 +38,11 @@
 
             <div class="form-group form-group-commit">
                 <label>SQL 内容</label>
-                <textarea class="form-control" rows="10" name="sql_area"></textarea>
+                <textarea class="form-control" rows="10" name="sql_area" id="sql_area"></textarea>
             </div>
             <div class="form-group">
-                <button class="btn btn-success">Commit</button>
+                <input id="sql_own_reviews" type="submit" class="btn btn-lg btn-info"  value="自审核"/>
+                <input id="sql_commit" type="button" class="btn btn-lg btn-info" style="margin-left: 200px;"  value="提交审核" />
             </div>
 
         </form>
@@ -49,7 +50,7 @@
         <div >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <span>工单：<a >{{ ince_word_id }}</a> 审核结果</span>
+                    <span>自审核结果</span>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -87,3 +88,7 @@
 
         </div>
     {% endblock %}
+
+{% block jss_flag %}
+    <script src="/static/jss/inception_sql.js"></script>
+{% endblock %}

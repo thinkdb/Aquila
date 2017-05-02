@@ -125,7 +125,11 @@ TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
-USE_L10N = True
+#USE_L10N = True
+USE_L10N = False
+
+# 设置时间显示格式
+DATETIME_FORMAT = 'Y-m-d H:i:s'
 
 #使用 utc 时间
 #USE_TZ = True

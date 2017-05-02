@@ -6,10 +6,8 @@ from django.utils.decorators import method_decorator
 
 # Create your views here.
 from cmdb import models as cmdb_models
+from scripts import functions
 
-
-def host_manager(request):
-    return HttpResponse("主机管理界面尚未完成，尽情期待！！！")
 
 
 def user_manager(request):
@@ -60,21 +58,14 @@ def get_user_cookie(request):
 
 
 def login(request):
-    # print(type(request))
-    # #print(request.environ)
-    # print(request.COOKIES)
-    # for k, v in request.environ.items():
-    #     print(k, v)
     if request.method == 'POST':
         username = request.POST.get('username', None)
         pwd = request.POST.get('password', None)
-        user = cmdb_models.UserInfo.objects.filter(user_name=username, user_pass=pwd)
+        pass_str = functions.py_password(pwd)
+        user = cmdb_models.UserInfo.objects.filter(user_name=username, user_pass=pass_str)
         if user:
-            # 设置用户的 cookie 値，以一个 dict 形式存放在浏览器中
             res = redirect('/dbms/index')
-            # res.set_cookie('userinfo', username)  # 明文方式
-            res.set_signed_cookie('userinfo', username, salt='adfsfsdfsd') # 加密方式
-            # request.get_signed_cookie('userinfo', salt='adfsfsdfsd') #　解密
+            res.set_signed_cookie('userinfo', username, salt='adfsfsdfsd')
             return res
         else:
             return render(request, 'login.html', {'user_error': '用户名或密码错误'})
@@ -88,6 +79,7 @@ def register(request):
         pwd = request.POST.get('password', None)
         email = request.POST.get('Email', None)
         user_info = cmdb_models.UserInfo.objects.filter(user_name=user)
+        pass_str = functions.py_password(pwd)
         if user_info:
             # username and password is existe
             # 通过 ajax 返回账号已经存在的信息
@@ -95,7 +87,7 @@ def register(request):
         else:
             cmdb_models.UserInfo.objects.create(
                 user_name=user,
-                user_pass=pwd,
+                user_pass=pass_str,
                 user_emails=email,
                 role_id=2,
                 user_group_id=2,

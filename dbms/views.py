@@ -3,29 +3,22 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.shortcuts import HttpResponse
 from dbms import models as dbms_models
+from cmdb import models as cmdb_models
 from scripts import functions
 from cmdb.views import auth
 from cmdb.views import get_user_cookie
-from .models import InceptionAuditDetail
 import json
 
 @auth
 def index(request):
-    # 获取用户的 cookie,如果没有，则不能登录
-    #user_cookie = request.get_signed_cookie('userinfo', salt='adfsfsdfsd')
     user_cookie = get_user_cookie(request)
-    # if user_cookie:
-    #     return render(request, 'index.html', {'userinfo': user_cookie})
-    # else:
-    #     return redirect('/cmdb/login')
-
     return render(request, 'index.html', {'userinfo': user_cookie})
 
 
 @auth
 def sql_reviews(request):
     user_cookie = get_user_cookie(request)
-    review_users = ['think', 'zhangsan', '2343', '23423', '23423423']
+    review_users = ['admin', '2343', '23423', '23423423']
     if request.method == 'POST':
         host_ip = request.POST.get('dbhost', None)
         db_name = request.POST.get('dbname', None)
@@ -41,8 +34,7 @@ def sql_reviews(request):
         if host_ip and db_name and db_port and review_user and sql_content:
             # 审核 sql
             sql_content = sql_content.rstrip()
-            result = functions.ince_run_sql(host_ip, sql_content, db_port=db_port, db_user='think', db_passwd='123456',
-                                            ince_host='192.168.1.6', ince_port=6669)
+            result = functions.ince_run_sql(host_ip, sql_content, db_port=db_port, db_user='think', db_passwd='123456')
 
             # 检查语法问题
             if type(result) == tuple:
@@ -89,7 +81,7 @@ def sql_reviews(request):
                         backup_dbname = item[8]
                         execute_time = int(float(item[9]) * 1000)
                         sql_hash = item[10]
-                        new = InceptionAuditDetail()
+                        new = dbms_models.InceptionAuditDetail()
                         new.work_order_id = w_id
                         new.sql_sid = sql_sid
                         new.status = status

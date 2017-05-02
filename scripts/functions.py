@@ -1,12 +1,14 @@
 #!/bin/env python3
 # _*_ coding:utf8 _*_
 
+from django.conf import settings
 import pymysql as pymysqldb
 import paramiko
 import socket
 import struct
 import re
 import time
+import hashlib
 
 
 class DBAPI(object):
@@ -101,7 +103,7 @@ def inception_sql(db_host, db_user, db_passwd, sql_content, db_port=3306,
     return ince_run_sql
 
 
-def ince_run_sql(db_host, sql_content, db_user, db_passwd, ince_host, ince_port, db_port=3306, enable_check=1,
+def ince_run_sql(db_host, sql_content, db_user, db_passwd, db_port=3306, enable_check=1,
                  enable_execute=0, enable_split=0, enable_ignore_warnings=0, sleep=500):
     """
     Connect Inception to execute SQL
@@ -110,6 +112,8 @@ def ince_run_sql(db_host, sql_content, db_user, db_passwd, ince_host, ince_port,
     :param port: MySQL port to use, default is usually OK. (default: 3306)
     :return:
     """
+    ince_host = getattr(settings, 'INCEPTION')['default']['INCEPTION_HOST']
+    ince_port = int(getattr(settings, 'INCEPTION')['default']['INCEPTION_PORT'])
     run_sql = inception_sql(db_user=db_user, db_passwd=db_passwd, db_host=db_host, sql_content=sql_content, db_port=db_port,
                             enable_check=enable_check, enable_execute=enable_execute, enable_split=enable_split,
                             enable_ignore_warnings=enable_ignore_warnings, sleep=sleep)
@@ -149,4 +153,21 @@ def num2ip(arg, int_ip):
     else:
         ip = str(socket.ntohl(struct.unpack('I', socket.inet_aton(int_ip))[0]))
     return ip
+
+
+def py_password(argv):
+    """
+    Generate an encrypted string
+    """
+    h = hashlib.md5(bytes('3df6a1341e8b', encoding="utf-8"))
+    h.update(bytes(argv, encoding="utf-8"))
+    pass_str = h.hexdigest()
+    return pass_str
+
+
+def get_config():
+    flag = hasattr(settings, 'INCEPTION')
+    if flag:
+        incepiton_cnf = getattr(settings, 'INCEPTION')
+        return incepiton_cnf
 

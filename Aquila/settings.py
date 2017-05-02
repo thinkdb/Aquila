@@ -90,7 +90,7 @@ DATABASES = {
         'NAME': 'aquila',
         'USER': 'think',
         'PASSWORD': '123456',
-        'HOST': '192.168.1.6',
+        'HOST': '192.168.1.51',
     }
 }
 
@@ -143,3 +143,17 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+
+INCEPTION = {
+    'default': {
+        'INCEPTION_HOST': '192.168.1.51',
+        'INCEPTION_PORT': 6669,
+    },
+    'backup': {
+        'BACKUP_USER': 'root',
+        'BACKUP_PASSWORD': '123456',
+        'BACKUP_PORT': 3306,
+        'BACKUP_HOST': '127.0.0.1',
+    },
+}

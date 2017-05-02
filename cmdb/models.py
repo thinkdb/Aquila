@@ -23,7 +23,7 @@ class UserGroup(models.Model):
 
 class UserInfo(models.Model):
     user_name = models.CharField(max_length=40, unique=True)
-    user_pass = models.CharField(max_length=40)
+    user_pass = models.CharField(max_length=96)
     user_emails = models.CharField(max_length=100)
     permission = models.ForeignKey('AuthPermissions')
     role = models.ForeignKey('UserRole')
@@ -85,7 +85,3 @@ class AuthGroupPermissions(models.Model):
 
     class Meta:
         db_table = 'cmdb_auth_group_permissions'
-
-
-class VerboseName(models.Model):
-    first_name = models.CharField("person's first name", max_length=30)

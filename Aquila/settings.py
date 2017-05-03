@@ -84,17 +84,6 @@ WSGI_APPLICATION = 'Aquila.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'aquila',
-        'USER': 'think',
-        'PASSWORD': '123456',
-        'HOST': '192.168.1.51',
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
@@ -144,10 +133,20 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'aquila',
+        'USER': 'think',
+        'PASSWORD': '123456',
+        'HOST': '192.168.1.6',
+    }
+}
+
 
 INCEPTION = {
     'default': {
-        'INCEPTION_HOST': '192.168.1.51',
+        'INCEPTION_HOST': '192.168.1.6',
         'INCEPTION_PORT': 6669,
     },
     'backup': {

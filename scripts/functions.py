@@ -193,9 +193,14 @@ def tran_audit_result(result):
         if error_result != 'None':
 
             result_dict[keys]['error_msg'] = {'error_msgs': {}}
+            a = ''
             for id, rows in enumerate(error_result.split('\n')):
                 result_dict[keys]['error_msg']['status'] = 1
-                result_dict[keys]['error_msg']['error_msgs'][id] = rows
+                # result_dict[keys]['error_msg']['error_msgs'][id] = rows
+                a = a+rows+'---'
+            result_dict[keys]['error_msg']['error_msgs'] = a
+            #result_dict[keys]['error_msg']['error_msgs'] = a
+
         else:
             result_dict[keys]['error_msg']['status'] = 0
     return result_dict

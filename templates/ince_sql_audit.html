@@ -20,6 +20,7 @@
 
     <!--修改主体内容-->
     {% block body_body %}
+        {% include 'audit_details_shade_layer.html' %}
         <div class="panel-body" id="table_ip_num">
             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                 <thead>
@@ -36,7 +37,8 @@
                     {% if work_order_list %}
                         {% for item in work_order_list %}
                             <tr>
-                                <td><a href="{% url 'dbms_sql_audit_details' item.work_order_id  %}">{{ item.work_order_id }}</a></td>
+                                <td><a id="host_group_append" href="{% url 'dbms_sql_audit_details' item.work_order_id  %}">{{ item.work_order_id }}</a></td>
+{#                                <td><a id="host_group_append">{{ item.work_order_id }}</a></td>#}
                                 <td>{{ item.work_user }}</td>
                                 <td>{{ item.r_time }}</td>
                                 <td id="num_to_ip">{{ item.db_host }}</td>

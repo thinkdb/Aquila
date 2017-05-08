@@ -1,0 +1,73 @@
+{% load udf_filter %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工单审核</title>
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div style="margin: 10px">
+{% for item in work_info %}
+    <span>工单号:{{ item.work_order_id }}</span>
+    <span>工单发起人:{{ item.work_user }}</span>
+    <span>工单发起时间:{{ item.r_time }}</span>
+{% endfor %}
+    <div class="btn-group"}>
+      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        审核 <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#">通过</a></li>
+        <li><a href="#">驳回</a></li>
+      </ul>
+    </div>
+</div>
+<div>
+    <table class="table table-hover" >
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>执行状态</th>
+            <th>错误代码</th>
+            <th>语句状态</th>
+            <th>错误信息</th>
+            <th>sql内容</th>
+            <th>影响行数</th>
+            <th>回滚id</th>
+            <th>恢复库名</th>
+            <th>执行时间</th>
+            <th>SqlHash</th>
+        </tr>
+    </thead>
+    {% for items in detail_result %}
+        <tr>
+        <td>{{ items.sql_sid }}</td>
+        <td>{{ items.status }}</td>
+        <td>{{ items.err_id}}</td>
+        <td>
+            {% if items.error_msg == "None" %}
+                {{ None}}
+            {% else %}
+                {% for line in  items.error_msg|udf_split %}
+                    <p>{{ line }}</p>
+                {% endfor %}
+            {% endif %}
+
+        </td>
+        <td>{{ items.stage_status }}</td>
+        <td>{{ items.sql_content }}</td>
+        <td>{{ items.aff_row }}</td>
+        <td>{{ items.rollback_id }}</td>
+        <td>{{ items.backup_dbname }}</td>
+        <td>{{ items.execute_time }}</td>
+        <td>{{ items.sql_hash }}</td>
+
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+</body>
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+</html>

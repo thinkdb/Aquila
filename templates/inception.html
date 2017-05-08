@@ -1,5 +1,6 @@
 <!--继承基础模板-->
 {% extends 'base.html' %}
+{% load udf_filter %}
 
 <!--修改基础模板中的 title 标签-->
 {% block title %}SQL发布{% endblock %}
@@ -91,7 +92,7 @@
                                                 {% if items.error_msg.status == 0 %}
                                                     {{ None}}
                                                 {% else %}
-                                                    {% for line in items.error_msg.error_msgs.values %}
+                                                    {% for line in  items.error_msg.error_msgs|udf_split %}
                                                         <p>{{ line }}</p>
                                                     {% endfor %}
                                                 {% endif %}

@@ -12,3 +12,7 @@ def num2ip(arg, int_ip):
     else:
         ip = str(socket.ntohl(struct.unpack('I', socket.inet_aton(int_ip))[0]))
     return ip
+
+@register.filter
+def udf_split(ret):
+    return ret.split('---')

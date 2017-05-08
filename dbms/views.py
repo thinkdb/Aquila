@@ -4,10 +4,29 @@ from django.shortcuts import render, redirect
 from django.shortcuts import HttpResponse
 from dbms import models as dbms_models
 from cmdb import models as cmdb_models
+from django import forms
+from django.forms import widgets
+from django.forms import fields
 from scripts import functions
 from cmdb.views import auth
 from cmdb.views import get_user_cookie
 import json
+
+
+class AuditDetailFM(forms.Form):
+    sql_sid = forms.Field(disabled=True)
+    sql_status = forms.Field(disabled=True)
+    err_id = forms.Field(disabled=True)
+    error_msg = forms.Field(disabled=True)
+    state_status = forms.Field(disabled=True)
+    sql_content = forms.Field(disabled=True)
+    aff_row = forms.Field(disabled=True)
+    rollback_id = forms.Field(disabled=True)
+    backup_dbname = forms.Field(disabled=True)
+    execute_time = forms.Field(disabled=True)
+    sql_hash = forms.Field(disabled=True)
+
+
 
 @auth
 def index(request):
@@ -96,7 +115,7 @@ def sql_reviews(request):
                         new.status = status
                         new.err_id = err_id
                         new.stage_status = stage_status
-                        new.error_msg = json.dumps(error_msg).encode('utf-8')
+                        new.error_msg = error_msg
                         new.sql_content = sql_content
                         new.aff_row = aff_row
                         new.rollback_id = rollback_ip
@@ -128,10 +147,11 @@ def sql_audit(request):
 @auth
 def sql_audit_detail(request, wid):
     work_details = dbms_models.InceptionAuditDetail.objects.filter(work_order_id=wid)
-    for lines in work_details:
-        # 修改
-        print(lines.error_msg, type(lines.error_msg), json.loads((lines.error_msg).decode("utf-8")))
-    return HttpResponse('ok')
+    work_info = dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid)
+    # for lines in work_details:
+    #     print(lines)
+
+    return render(request, 'audit_details.html', {'detail_result': work_details, "work_info": work_info})
 
 
 @auth

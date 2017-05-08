@@ -12,7 +12,7 @@
     <!--修改主体内容-->
     {% block body_body %}
         <!--导入sql提交表单-->
-        <form method="post">
+        <form action="{% url 'dbms_sql_reviews' %}" method="post">
             <div class="ince_content_input">
                 <div>
                     <label for="host_id">主库地址</label>
@@ -59,22 +59,60 @@
                             <thead>
                                 <tr>
                                     <th>id</th>
-                                    <th>执行语句</th>
-                                    <th>建议</th>
+                                    <th>执行状态</th>
+                                    <th>错误代码</th>
+                                    <th>语句状态</th>
+                                    <th>错误信息</th>
+                                    <th>sql内容</th>
+                                    <th>影响行数</th>
+                                    <th>回滚id</th>
+                                    <th>恢复库名</th>
+                                    <th>执行时间</th>
+                                    <th>SqlHash</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                    {% for items in ince_result %}
-
+                                    {% for items in ince_result.values %}
                                         <tr>
                                             <td>
-                                                {{ items.0 }}
+                                                {{ items.sql_sid }}
                                             </td>
                                             <td>
-                                                {{ items.5 }}
+                                                {{ items.status }}
                                             </td>
                                             <td>
-                                                {{ items.4 }}
+                                                {{ items.err_id }}
+                                            </td>
+                                            <td>
+                                                {{ items.stage_status }}
+                                            </td>
+                                            <td>
+
+                                                {% if items.error_msg.status == 0 %}
+                                                    {{ None}}
+                                                {% else %}
+                                                    {% for line in items.error_msg.error_msgs.values %}
+                                                        <p>{{ line }}</p>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {{ items.sql_content }}
+                                            </td>
+                                            <td>
+                                                {{ items.aff_row }}
+                                            </td>
+                                            <td>
+                                                {{ items.rollback_id }}
+                                            </td>
+                                            <td>
+                                                {{ items.backup_dbname }}
+                                            </td>
+                                            <td>
+                                                {{ items.execute_time }}
+                                            </td>
+                                            <td>
+                                                {{ items.sql_hash }}
                                             </td>
                                         </tr>
                                     {% endfor %}

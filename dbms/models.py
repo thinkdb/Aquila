@@ -85,7 +85,7 @@ class InceptionWorkOrderInfo(models.Model):
 
 class InceptionAuditDetail(models.Model):
     id = models.AutoField(primary_key=True)
-    work_order = models.ForeignKey('InceptionWorkOrderInfo', on_delete=models.CASCADE, to_field='work_order_id')
+    work_order = models.ForeignKey(to='InceptionWorkOrderInfo', on_delete=models.CASCADE, to_field='work_order_id')
     sql_sid = models.UnsignedSmallIntegerField()              # 工单中的sql序号
     status = models.UnsignedSmallIntegerField()               # RERUN,CHECKED, EXECUTED, None
     err_id = models.UnsignedSmallIntegerField()               # 0, 1, 2

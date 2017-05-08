@@ -2,11 +2,12 @@
 {% extends 'base.html' %}
 
     {% block css_flag %}
-    <link rel="stylesheet" href="/static/css/iframe_host_manage.css"/>
+
         <link href="/static/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
 
-    <!-- DataTables Responsive CSS -->
-    <link href="/static/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+        <!-- DataTables Responsive CSS -->
+        <link href="/static/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+        <link rel="stylesheet" href="/static/css/iframe_host_manage.css"/>
     {% endblock %}
 
 <!--修改基础模板中的 title 标签-->
@@ -27,7 +28,7 @@
                         <th>发起人</th>
                         <th>发起时间</th>
                         <th>主机</th>
-                        <th>操作</th>
+                        <th>审核状态</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,20 +36,28 @@
                     {% if work_order_list %}
                         {% for item in work_order_list %}
                             <tr>
-                                <td><a href="#">{{ item.work_order_id }}</a></td>
+                                <td><a href="{% url 'dbms_sql_audit_details' item.work_order_id  %}">{{ item.work_order_id }}</a></td>
                                 <td>{{ item.work_user }}</td>
                                 <td>{{ item.r_time }}</td>
                                 <td id="num_to_ip">{{ item.db_host }}</td>
                                 <td>
-                                    <div class="btn-group">
-                                      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        审核 <span class="caret"></span>
-                                      </button>
-                                      <ul class="dropdown-menu">
-                                        <li><a href="#">通过</a></li>
-                                        <li><a href="#">驳回</a></li>
-                                      </ul>
-                                    </div>
+                                    {% if item.review_status == 10 %}
+                                        <span class="sql_audit_info sql_audit_info_info">待审核</span>
+                                    {% elif item.review_status == 0 %}
+                                        <span class="sql_audit_info sql_audit_info_success">审核通过</span>
+                                    {% else %}
+                                        <span class="sql_audit_info sql_audit_info_warning">审核异常</span>
+                                    {% endif %}
+{#                                    <div class="btn-group">#}
+{#                                      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                                        审核 <span class="caret"></span>#}
+{#                                      </button>#}
+{#                                      <ul class="dropdown-menu">#}
+{#                                        <li><a href="#">通过</a></li>#}
+{#                                        <li><a href="#">驳回</a></li>#}
+{#                                      </ul>#}
+{#                                    </div>#}
+
 
                                 </td>
 

@@ -15,6 +15,7 @@ $('#sql_commit').click(function () {
             'result_db': '1'},
         dataType: 'json',
         success: function (data) {
+            console.log(data);
             flag = data.flag;
             msg_msg = data.msg;
             alert(msg_msg);

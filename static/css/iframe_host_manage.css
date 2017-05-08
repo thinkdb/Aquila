@@ -13,3 +13,30 @@
 .body_context{
     margin: 20px 0 0 20px;
 }
+
+.sql_audit_info{
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 6px 12px;
+    color: white;
+}
+
+.sql_audit_info_success{
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+.sql_audit_info_error{
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+.sql_audit_info_warning{
+    background-color: #ec971f;
+    border-color: #d58512;
+}
+
+.sql_audit_info_info{
+    background-color: #31b0d5;
+    border-color: #269abc;
+}

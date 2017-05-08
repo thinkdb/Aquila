@@ -156,3 +156,6 @@ INCEPTION = {
         'BACKUP_HOST': '127.0.0.1',
     },
 }
+
+# 用户密码加密 KEY
+USER_ENCRYPT_KEY = '3df6a1341e8b'

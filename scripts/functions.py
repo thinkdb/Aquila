@@ -159,7 +159,8 @@ def py_password(argv):
     """
     Generate an encrypted string
     """
-    h = hashlib.md5(bytes('3df6a1341e8b', encoding="utf-8"))
+    encrypt_key = getattr(settings, 'USER_ENCRYPT_KEY')
+    h = hashlib.md5(bytes(encrypt_key, encoding="utf-8"))
     h.update(bytes(argv, encoding="utf-8"))
     pass_str = h.hexdigest()
     return pass_str
@@ -171,3 +172,30 @@ def get_config():
         incepiton_cnf = getattr(settings, 'INCEPTION')
         return incepiton_cnf
 
+
+def tran_audit_result(result):
+    result_dict = {}
+    for i, items in enumerate(result):
+        keys = i+1
+        result_dict[keys] = {'error_msg': {}}
+        result_dict[keys]['sql_sid'] = items[0]
+        result_dict[keys]['status'] = items[1]
+        result_dict[keys]['err_id'] = items[2]
+        result_dict[keys]['stage_status'] = items[3]
+        result_dict[keys]['sql_content'] = items[5]
+        result_dict[keys]['aff_row'] = items[6]
+        result_dict[keys]['rollback_id'] = items[7]
+        result_dict[keys]['backup_dbname'] = items[8]
+        result_dict[keys]['execute_time'] = items[9]
+        result_dict[keys]['sql_hash'] = items[10]
+
+        error_result = items[4]
+        if error_result != 'None':
+
+            result_dict[keys]['error_msg'] = {'error_msgs': {}}
+            for id, rows in enumerate(error_result.split('\n')):
+                result_dict[keys]['error_msg']['status'] = 1
+                result_dict[keys]['error_msg']['error_msgs'][id] = rows
+        else:
+            result_dict[keys]['error_msg']['status'] = 0
+    return result_dict

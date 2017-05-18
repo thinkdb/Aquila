@@ -19,8 +19,18 @@ $(function(){
         $('.shade_layer').removeClass('check_dis_flag');
     });
 
-    $('#host_group_update').click(function () {
-        // $('.shade_layer').removeClass('check_dis_flag');
+    $('tbody').delegate("button", "click", function () {
+        // 获取主机组的id
+        var group_name = $(this).parent().parent().find('#group_name').text();
+        var group_jd = $(this).parent().parent().find('#group_jd').text();
+        var group_id = $(this).parent().parent().find('#hostgroup_id').text();
+        $('.shade_layer').removeClass('check_dis_flag');
+        // 填充数据
+        $('#groupname').val(group_name);
+        $('#groupdesc').val(group_jd);
+        $('#groupid').text(group_id);
+
+        // alert(a);
     });
 
     $('#host_group_delete').click(function () {
@@ -33,10 +43,11 @@ $(function(){
 
 $('#group_add_button').click(function () {
     $.ajax({
-        url: '/cmdb/hostgroup_append',
+        url: '/backend/hostgroup_append.html',
         type: 'POST',
-        data: {'groupname': $('#groupname').val(), 'groupdesc': $('#groupdesc').val()},
+        data: {'groupname': $('#groupname').val(), 'groupdesc': $('#groupdesc').val(), 'groupid':$('#groupid').text()},
         dataType: 'json',
+        headers: {'X-CSRFtoken': $.cookie('csrftoken')},
         success: function (data) {
             flag = data.flag;
             msg_msg = data.msg;
@@ -53,6 +64,8 @@ $('#exit_edit').click(function () {
     $('.shade_layer').addClass('check_dis_flag');
 });
 
-// 动态添加 模态对话框
+
+
+
 
 

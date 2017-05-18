@@ -7,11 +7,11 @@ from cmdb import views
 from django.views import View
 
 urlpatterns = [
-    url(r'^login', views.login, name='login'),
-    url(r'^register', views.register, name='register'),
+    url(r'login/$', views.login, name='login'),
+    url(r'^register/$', views.register, name='register'),
     url(r'^user', views.user_manager, name='user_manager'),
-    #url(r'^test', views.test, name='test'),
-    #url(r'^test', views.AuthAll.as_view(), name='test'),
-    url(r'hostgroup_manage', views.hostgroup_manage, name='hostgroup_manage'),
-    url(r'hostgroup_append', views.hostgroup_append, name='cmdb_hostgroup_append')
+    url(r'^backend/$', views.backend, name='backend'),
+    url(r'^backend/hostgroup_manage.html$', views.hostgroup_manage, name='hostgroup_manage'),
+    url(r'backend/hostgroup_append.html$', views.hostgroup_append, name='cmdb_hostgroup_append'),
+    url(r'backend/host_manage.html$', views.host_manage, name='cmdb_host_manage'),
 ]

@@ -31,14 +31,17 @@ class AuditDetailFM(forms.Form):
 @auth
 def index(request):
     user_cookie = get_user_cookie(request)
-    return render(request, 'index.html', {'userinfo': user_cookie})
+    user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
+    return render(request, 'index.html', {'userinfo': user_prive})
 
 
 @auth
 def sql_reviews(request):
     user_cookie = get_user_cookie(request)
+    user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
     review_users = ['admin', '2343', '23423', '23423423']
     if request.method == 'POST':
+
         host_ip = request.POST.get('dbhost', None)
         db_name = request.POST.get('dbname', None)
         db_port = request.POST.get('dbport', 3306)
@@ -139,7 +142,8 @@ def sql_reviews(request):
 
 @auth
 def sql_audit(request):
-    user_name = get_user_cookie(request)
+    user_cookie = get_user_cookie(request)
+    user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
     user_work_order_list = dbms_models.InceptionWorkOrderInfo.objects.filter(review_user=user_name)
     # 使用多表关联， __ 反向查找
     return render(request, 'ince_sql_audit.html', {'userinfo': user_name, 'work_order_list': user_work_order_list})

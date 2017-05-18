@@ -161,23 +161,38 @@ def test(request):
 
 @auth
 def hostgroup_manage(request):
-
     user_cookie = get_user_cookie(request)
+    user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
     host_edit = request.POST.get('host_edit', '')
     result = cmdb_models.HostGroup.objects.all()
     hostgroup_list = []
 
     if result:
         hostgroup_list = result
-    return render(request, 'hostgroup_manage.html', {'userinfo': user_cookie, 'hostgroup_list': hostgroup_list, 'host_edit': host_edit})
+    return render(request, 'hostgroup_manage.html', {'userinfo': user_prive, 'hostgroup_list': hostgroup_list, 'host_edit': host_edit})
 
 
 @auth
+def host_manage(request):
+    user_cookie = get_user_cookie(request)
+    user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
+    return render(request, 'host_manage.html', {'userinfo': user_prive})
+
+@auth
 def hostgroup_append(request):
+    import json
     group_name = request.POST.get('groupname', None)
     group_desc = request.POST.get('groupdesc', None)
-    import json
-    if group_name:
+    group_id = request.POST.get('groupid', None)
+    if group_id and group_name:
+        try:
+            cmdb_models.HostGroup.objects.filter(id=group_id).update(
+                host_group_name=group_name,
+                host_group_jd=group_desc)
+            result_dict = {'flag': 1, 'msg': 'GroupName: %s update successful' % group_name}
+        except Exception:
+            result_dict = {'flag': 0, 'msg': 'GroupName: %s already exist' % group_name}
+    elif group_name:
         result = cmdb_models.HostGroup.objects.filter(host_group_name=group_name)
         if result:
             result_dict = {'flag': 0, 'msg': 'GroupName: %s already exist' % group_name}
@@ -190,3 +205,9 @@ def hostgroup_append(request):
     else:
         result_dict = {'flag': 0, 'msg': 'GroupName: is None'}
     return HttpResponse(json.dumps(result_dict))
+
+
+def backend(request):
+    user_cookie = get_user_cookie(request)
+    user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
+    return render(request, 'backend.html', {'userinfo': user_prive})

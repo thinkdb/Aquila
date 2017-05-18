@@ -45,6 +45,7 @@
                     </div>
                     <div class="panel-body">
                         <form role="form" action="{% url 'login' %}" method="post">
+                            {% csrf_token %}
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Username" name="username" type="text" autofocus>

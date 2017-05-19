@@ -147,6 +147,7 @@ def get_ip():
 def num2ip(arg, int_ip):
     """
     IP address and number conversion
+    arg == ip, Convert digital to IP address
     """
     if arg == 'ip':
         ip = socket.inet_ntoa(struct.pack('I', socket.htonl(int_ip)))

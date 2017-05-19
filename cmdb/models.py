@@ -40,6 +40,9 @@ class HostGroup(models.Model):
     class Meta:
         db_table = 'cmdb_host_group'
 
+    def __str__(self):
+        return self.host_group_name
+
 
 class UserHostRelationship(models.Model):
     user_group = models.ForeignKey('UserGroup')
@@ -53,16 +56,25 @@ class UserHostRelationship(models.Model):
 
 
 class HostInfo(models.Model):
-    host_ip = models.UnsignedIntegerField()
+    host_ip = models.UnsignedIntegerField(unique=True)
     app_type = models.CharField(max_length=20)
-    app_user = models.CharField(max_length=20)
-    app_pass = models.CharField(max_length=30)
-    app_port = models.SmallIntegerField()
-    host_group = models.ForeignKey('HostGroup', rel='id')
+    host_user = models.CharField(max_length=20)
+    host_pass = models.CharField(max_length=30)
+    host_port = models.SmallIntegerField()
+    host_group = models.ForeignKey(to='HostGroup', to_field='id', db_constraint=False)
 
     class Meta:
         db_table = 'cmdb_host_info'
-        index_together = ('host_ip', 'app_type', 'app_port',)
+
+
+class HostInfoAuth(models.Model):
+    host = models.ForeignKey(to='HostInfo', to_field='id', db_constraint=False)
+    app_user = models.CharField(max_length=20)
+    app_pass = models.CharField(max_length=30)
+    app_port = models.SmallIntegerField()
+
+    class Meta:
+        db_table = 'cmdb_host_auth'
 
 
 class AuthPermissions(models.Model):

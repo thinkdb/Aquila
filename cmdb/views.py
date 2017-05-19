@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import HttpResponse
-from django.utils.safestring import mark_safe
+from cmdb import forms as cmdb_forms
 from django.views import View
 from django.utils.decorators import method_decorator
 
-# Create your views here.
+
 from cmdb import models as cmdb_models
 from scripts import functions
-
+import json
 
 
 def user_manager(request):
@@ -17,7 +17,6 @@ def user_manager(request):
 # FBV
 def auth(func):
     def inner(request, *args, **kwargs):
-        #val = request.COOKIES.get('userinfo')
         try:
             val = request.get_signed_cookie('userinfo', salt='adfsfsdfsd')
             if not val:
@@ -29,6 +28,7 @@ def auth(func):
     return inner
 
 # CBV
+
 
 @method_decorator(auth, name='dispatch')
 class AuthAll(View):
@@ -98,70 +98,10 @@ def register(request):
         return render(request, 'register.html')
 
 
-# 生成测试数据
-data_li = []
-for i in range(100):
-    data_li.append(i)
-
-
-def test(request):
-
-    # 获取当前要查看的页数
-    page_size = 6                             # 每页面显示的数量
-    count_datas = len(data_li)                # 总数据量
-    current_page = request.GET.get('p')
-    current_page = int(current_page)          # 当前第几页
-    start_pages = (current_page-1)*page_size   # 数据的开始
-    end_pages = current_page * page_size       # 数据的结束
-    data = data_li[start_pages:end_pages]       # 分页的数据
-    page_buttons = 11                         # 显示的按钮数
-
-    # 后台获取分页的总数
-
-    count_pages, add_item = divmod(count_datas, page_size)
-    if add_item:
-        count_pages += 1                       # 总的页数
-
-    # 生成分页按钮
-
-    page_list = []
-    if count_pages < page_buttons:
-        start_page = 1
-        end_page = page_buttons + 1
-    else:
-        if current_page <= int((page_buttons+1)/2):
-            start_page = 1
-            end_page = page_buttons + 1
-        elif current_page > int((page_buttons+1)/2):
-            start_page = current_page - int((page_buttons - 1)/2)
-            if current_page + 5 >= count_pages:
-                end_page = count_pages + 1
-                start_page = count_pages - page_buttons + 1
-            else:
-                end_page = current_page + int((page_buttons - 1)/2)
-
-    page_html = '<a class="page_button" href="/cmdb/test/?p=%s">上一页</a>' % (current_page -1)
-    page_list.append(page_html)
-    for i in range(start_page, end_page):
-        if i == current_page:
-            page_html = '<a class="page_button active" href="/cmdb/test/?p=%s">%s</a>' %(i, i)
-        else:
-            page_html = '<a class="page_button" href="/cmdb/test/?p=%s">%s</a>' % (i, i)
-        page_list.append(page_html)
-
-    # page_html = ''.join(page_list) 前台需要做 filter处理，page_html|safe
-    page_html = '<a class="page_button" href="/cmdb/test/?p=%s">下一页</a>' % (current_page + 1)
-    page_list.append(page_html)
-    page_html = mark_safe(''.join(page_list))
-
-    # 这一步是让 浏览器 确认收到的 包含html文本的内容 为正常的内容，不是外部来攻击的内容，不加的话，会原封不动把上面html文件内容在浏览器上显示出来
-    return render(request, 'test.html', {'data_page': data, 'page_str': page_html})
-
-
-
 @auth
 def hostgroup_manage(request):
     user_cookie = get_user_cookie(request)
+    request_path = request.get_full_path()
     user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
     host_edit = request.POST.get('host_edit', '')
     result = cmdb_models.HostGroup.objects.all()
@@ -169,18 +109,57 @@ def hostgroup_manage(request):
 
     if result:
         hostgroup_list = result
-    return render(request, 'hostgroup_manage.html', {'userinfo': user_prive, 'hostgroup_list': hostgroup_list, 'host_edit': host_edit})
+    return render(request, 'manage.html', {'userinfo': user_prive,
+                                           'hostgroup_list': hostgroup_list,
+                                           'host_edit': host_edit,
+                                           'request_path': request_path})
 
 
 @auth
 def host_manage(request):
+    obj = cmdb_forms.HostAppend()
+    request_path = request.get_full_path()
     user_cookie = get_user_cookie(request)
     user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
-    return render(request, 'host_manage.html', {'userinfo': user_prive})
+    result = cmdb_models.HostInfo.objects.all()
+    if request.method == 'POST':
+        obj = cmdb_forms.HostAppend(request.POST)
+        rel = obj.is_valid()
+        if rel:
+            ip = obj.cleaned_data['host_ip']
+            new_ip = functions.num2ip(1, ip)
+            obj.cleaned_data['host_ip'] = new_ip
+            exist_ip = cmdb_models.HostInfo.objects.filter(host_ip=new_ip).first()
+            if exist_ip:
+                ret = {'flag': 0, 'data': {'ip': '主机已经存在'}}
+            else:
+                ret = {'flag': 1, 'data': None}
+
+                try:
+                    cmdb_models.HostInfo.objects.create(host_ip=obj.cleaned_data['host_ip'],
+                                                        app_type=obj.cleaned_data['app_type'],
+                                                        host_group_id=obj.cleaned_data['host_group'],
+                                                        host_pass=obj.cleaned_data['host_pass'],
+                                                        host_port=obj.cleaned_data['host_port'],
+                                                        host_user=obj.cleaned_data['host_user']
+
+                                                        )
+                except Exception as e:
+                    print('3333', e)
+            return HttpResponse(json.dumps(ret))
+        else:
+            ret = {'flag': 0, 'data': obj.errors}
+            return HttpResponse(json.dumps(ret))
+    else:
+        return render(request, 'manage.html', {'userinfo': user_prive,
+                                               'request_path': request_path,
+                                               'host_list': result,
+                                               'obj': obj})
+
+
 
 @auth
 def hostgroup_append(request):
-    import json
     group_name = request.POST.get('groupname', None)
     group_desc = request.POST.get('groupdesc', None)
     group_id = request.POST.get('groupid', None)

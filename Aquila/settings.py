@@ -139,14 +139,14 @@ DATABASES = {
         'NAME': 'aquila',
         'USER': 'think',
         'PASSWORD': '123456',
-        'HOST': '192.168.1.51',
+        'HOST': '192.168.1.6',
     }
 }
 
 
 INCEPTION = {
     'default': {
-        'INCEPTION_HOST': '192.168.1.51',
+        'INCEPTION_HOST': '192.168.1.6',
         'INCEPTION_PORT': 6669,
     },
     'backup': {

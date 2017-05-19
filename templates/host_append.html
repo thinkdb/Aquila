@@ -1,0 +1,26 @@
+<form id="form" action="{% url 'cmdb_host_manage' %}" method="post">
+{% csrf_token %}
+{% for item in obj %}
+    {% if item.label == '应用类型' or item.label == '主机组' %}
+        <div class="form-group">
+            <div>
+                <lable>{{ item.label }}</lable>{{ item }}
+            </div>
+        </div>
+    {% else %}
+        <div class="form-group">
+            <div>
+                <lable>{{ item.label }}</lable>
+            </div>
+            <div>
+                {{ item }}
+            </div>
+        </div>
+
+    {% endif %}
+{% endfor %}
+
+    <span id="err_msg" style="color: red"></span>
+
+<input id="host_append" type="button" class="btn btn-lg btn-primary btn-block"  value="Commit"/>
+</form>

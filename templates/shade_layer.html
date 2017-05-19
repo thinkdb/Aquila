@@ -3,13 +3,16 @@
     <div class="col-md-4 col-md-offset-4">
         <div class="login-panel panel panel-default">
             <div class="panel-body" id="group_add_text">
-                <form id="form" role="form"  method="post">
                     <fieldset style="opacity:1">
                         <div><i id="exit_edit" class="fa fa-times" aria-hidden="true"></i></div>
+                        {% if request_path == '/backend/host_manage.html' %}
+                            {% include 'host_append.html' %}
+{#                        {% elif request_path == '/backend/hostgroup_manage.html' %}#}
+{#                            {% include 'hostgroup.html' %}#}
+                        {% else %}
                             {% include 'hostgroup_append.html' %}
-                        <input id="group_add_button" type="button" class="btn btn-lg btn-primary btn-block"  value="Commit"/>
+                        {% endif %}
                     </fieldset>
-                </form>
             </div>
         </div>
     </div>

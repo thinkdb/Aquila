@@ -24,9 +24,14 @@ models.UserGroup.objects.create(id=1, user_group_name='admin', user_group_jd='�
 models.UserGroup.objects.create(id=2, user_group_name='user', user_group_jd='普通用户组, 默认组')
 models.UserGroup.objects.create(id=3, user_group_name='dba', user_group_jd='数据库管理员组')
 
-# 初始化主机组
+# 初始化主机组， 这边可以不添加，后面使用超级管理员账号登录Aquila平台添加主机组
 models.HostGroup.objects.create(id=1, host_group_name='db', host_group_jd='数据主机组')
 models.HostGroup.objects.create(id=2, host_group_name='java', host_group_jd='java主机组')
+
+
+# 初始化应用类型
+models.AppType.objects.create(id=1, app_name='MySQL')
+models.AppType.objects.create(id=2, app_name='Java')
 
 
 # 初始化权限

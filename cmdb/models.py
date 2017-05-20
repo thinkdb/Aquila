@@ -25,12 +25,15 @@ class UserInfo(models.Model):
     user_name = models.CharField(max_length=40, unique=True)
     user_pass = models.CharField(max_length=96)
     user_emails = models.CharField(max_length=100)
-    permission = models.ForeignKey('AuthPermissions')
-    role = models.ForeignKey('UserRole')
-    user_group = models.ForeignKey('UserGroup')
+    permission = models.ForeignKey('AuthPermissions', db_constraint=False)
+    role = models.ForeignKey('UserRole', db_constraint=False)
+    user_group = models.ForeignKey('UserGroup', db_constraint=False)
 
     class Meta:
         db_table = 'cmdb_user_info'
+
+    def __str__(self):
+        return self.user_name
 
 
 class HostGroup(models.Model):
@@ -41,12 +44,12 @@ class HostGroup(models.Model):
         db_table = 'cmdb_host_group'
 
     def __str__(self):
-        return self.host_group_name
+        return self.host_group_jd
 
 
 class UserHostRelationship(models.Model):
-    user_group = models.ForeignKey('UserGroup')
-    host_group = models.ForeignKey('HostGroup')
+    user_group = models.ForeignKey('UserGroup', db_constraint=False)
+    host_group = models.ForeignKey('HostGroup', db_constraint=False)
     lifetime = models.SmallIntegerField()
     expired = models.TinyIntegerField()
 
@@ -57,7 +60,7 @@ class UserHostRelationship(models.Model):
 
 class HostInfo(models.Model):
     host_ip = models.UnsignedIntegerField(unique=True)
-    app_type = models.CharField(max_length=20)
+    app_type = models.ForeignKey(to='AppType', to_field='id', db_constraint=False)
     host_user = models.CharField(max_length=20)
     host_pass = models.CharField(max_length=30)
     host_port = models.SmallIntegerField()
@@ -65,6 +68,19 @@ class HostInfo(models.Model):
 
     class Meta:
         db_table = 'cmdb_host_info'
+
+    def __str__(self):
+        return self.host_ip
+
+
+class AppType(models.Model):
+    app_name = models.CharField(max_length=30, unique=True)
+
+    class Meta:
+        db_table = 'cmdb_app_type'
+
+    def __str__(self):
+        return self.app_name
 
 
 class HostInfoAuth(models.Model):
@@ -92,8 +108,8 @@ class AuthPermissions(models.Model):
 
 
 class AuthGroupPermissions(models.Model):
-    user_group = models.ForeignKey('UserGroup')
-    permission = models.ForeignKey('AuthPermissions')
+    user_group = models.ForeignKey('UserGroup', db_constraint=False)
+    permission = models.ForeignKey('AuthPermissions', db_constraint=False)
 
     class Meta:
         db_table = 'cmdb_auth_group_permissions'

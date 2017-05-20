@@ -15,37 +15,24 @@
         <!--导入sql提交表单-->
         <form action="{% url 'dbms_sql_reviews' %}" method="post" id="form">
         {% csrf_token %}
-            <div class="ince_content_input">
-                <div>
-                    <label for="host_id">主库地址</label>
-                    <input class="form-control Ince-input-group" placeholder="Enter text" id="dbhost" name="dbhost">
-                </div>
-                <div>
-                    <label for="host_port">端口</label>
-                    <input class="form-control Ince-input-group" placeholder="Enter text" id="dbport" name="dbport">
-                </div>
-                <div>
-                    <label for="db_name">库名</label>
-                    <input class="form-control Ince-input-group" placeholder="Enter text" id="dbname" name="dbname">
-                </div>
-                <div>
-                    <label for="review_user">审核人</label>
-                    <select class="form-control Ince-input-group" id="select_user" name="select_user">
-                        {% for item in review_users %}
-                            <option value="{{ item }}">{{ item }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
+            {% for items in ince_form %}
 
-            <div class="form-group form-group-commit">
-                <label>SQL 内容</label>
-                <textarea class="form-control" rows="10" name="sql_area" id="sql_area"></textarea>
-            </div>
+                <div>
+                        <label>{{ items.label }}</label>
+                    <div style="margin-bottom: 10px;">
+                        {{ items }}
+                    </div>
+                    <div>
+                        <span style="color: red">{{ items.errors.0 }}</span>
+                    </div>
+                </div>
+
+            {% endfor %}
+
             <div class="form-group">
                 <input id="sql_own_reviews" type="submit" class="btn btn-lg btn-info"  value="自审核"/>
                 <input id="sql_own_reviews" type="reset" class="btn btn-lg btn-info"  value="重置"/>
-                <input id="sql_commit" type="button" class="btn btn-lg btn-info" style="margin-left: 200px;"  value="提交审核" />
+                <input id="sql_commit" type="button" class="btn btn-lg btn-info" value="提交审核" />
             </div>
 
         </form>

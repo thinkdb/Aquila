@@ -46,11 +46,10 @@ $(function(){
         $('#groupdesc').val(group_jd);
         $('#groupid').text(group_id);
 
-
         $('#id_host_id').val(host_id);
         $('#id_host_ip').val(num_to_ip);
         $('#id_app_type').val(app_type);
-        $('#id_host_group_id').val(host_group_id);
+        $('#id_host_group').val(host_group_id);
         $('#id_host_user').val(host_user);
         $('#id_host_pass').val(host_pass);
         $('#id_host_port').val(host_port);
@@ -86,6 +85,23 @@ $('#group_add_button').click(function () {
     })
 });
 
+$('#host_update').click(function () {
+    $.ajax({
+        url: '/backend/host_append.html',
+        type: 'POST',
+        data: $('#form').serialize(),
+        dataType: 'json',
+        headers: {'X-CSRFtoken': $.cookie('csrftoken')},
+        success: function (data) {
+            flag = data.flag;
+            msg_msg = data.msg;
+            if (flag)
+                location.reload();
+            else
+                $('#err_msg').text(msg_msg);
+        }
+    })
+});
 
 $('#exit_edit').click(function () {
     $('.shade_layer').addClass('check_dis_flag');

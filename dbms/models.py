@@ -12,7 +12,7 @@ class MysqlBackupSourceInfo(models.Model):
     back_time = models.TimeField()
     transport_time = models.TimeField(default='1980-01-01 01:01:01')
     is_transport = models.SmallIntegerField(default=0)
-    back_pool_id = models.ForeignKey('BackupPoolInfo', on_delete=models.CASCADE)
+    back_pool_id = models.ForeignKey('BackupPoolInfo', on_delete=models.CASCADE, db_constraint=False)
     r_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -34,7 +34,7 @@ class BackupPoolInfo(models.Model):
 
 class BackupedBinlogInfo(models.Model):
     id = models.AutoField(primary_key=True)
-    machine_id = models.ForeignKey('MysqlBackupSourceInfo', on_delete=models.CASCADE)
+    machine_id = models.ForeignKey('MysqlBackupSourceInfo', on_delete=models.CASCADE, db_constraint=False)
     binlog_name = models.CharField(max_length=50)
     binlog_create_time = models.DateTimeField()
     binlog_size = models.UnsignedSmallIntegerField()
@@ -47,7 +47,7 @@ class BackupedBinlogInfo(models.Model):
 
 class BackupedInfo(models.Model):
     id = models.AutoField(primary_key=True)
-    machine_id = models.ForeignKey('MysqlBackupSourceInfo', on_delete=models.CASCADE)
+    machine_id = models.ForeignKey('MysqlBackupSourceInfo', on_delete=models.CASCADE, db_constraint=False)
     backup_name = models.CharField(max_length=100)
     backup_file_path = models.CharField(max_length=100)
     backup_druation = models.UnsignedSmallIntegerField()
@@ -85,7 +85,7 @@ class InceptionWorkOrderInfo(models.Model):
 
 class InceptionAuditDetail(models.Model):
     id = models.AutoField(primary_key=True)
-    work_order = models.ForeignKey(to='InceptionWorkOrderInfo', on_delete=models.CASCADE, to_field='work_order_id')
+    work_order = models.ForeignKey(to='InceptionWorkOrderInfo', on_delete=models.CASCADE, to_field='work_order_id', db_constraint=False)
     sql_sid = models.UnsignedSmallIntegerField()              # 工单中的sql序号
     status = models.UnsignedSmallIntegerField()               # RERUN,CHECKED, EXECUTED, None
     err_id = models.UnsignedSmallIntegerField()               # 0, 1, 2
@@ -105,7 +105,7 @@ class InceptionAuditDetail(models.Model):
 
 class InceptionWorkSQL(models.Model):
     id = models.AutoField(primary_key=True)
-    work_order = models.ForeignKey('InceptionWorkOrderInfo', on_delete=models.CASCADE, to_field='work_order_id')
+    work_order = models.ForeignKey('InceptionWorkOrderInfo', on_delete=models.CASCADE, to_field='work_order_id', db_constraint=False)
     sql_content = models.TextField()
 
     class Meta:

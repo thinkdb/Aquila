@@ -64,7 +64,7 @@ def login(request):
         pass_str = functions.py_password(pwd)
         user = cmdb_models.UserInfo.objects.filter(user_name=username, user_pass=pass_str)
         if user:
-            res = redirect('/dbms/index')
+            res = redirect('/dbms/index.html')
             res.set_signed_cookie('userinfo', username, salt='adfsfsdfsd')
             return res
         else:
@@ -115,48 +115,6 @@ def hostgroup_manage(request):
                                            'request_path': request_path})
 
 
-@auth
-def host_manage(request):
-    obj = cmdb_forms.HostAppend()
-    request_path = request.get_full_path()
-    user_cookie = get_user_cookie(request)
-    user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
-    result = cmdb_models.HostInfo.objects.all()
-    if request.method == 'POST':
-        obj = cmdb_forms.HostAppend(request.POST)
-        rel = obj.is_valid()
-        if rel:
-            ip = obj.cleaned_data['host_ip']
-            new_ip = functions.num2ip(1, ip)
-            obj.cleaned_data['host_ip'] = new_ip
-            exist_ip = cmdb_models.HostInfo.objects.filter(host_ip=new_ip).first()
-            if exist_ip:
-                ret = {'flag': 0, 'data': {'ip': '主机已经存在'}}
-            else:
-                ret = {'flag': 1, 'data': None}
-
-                try:
-                    cmdb_models.HostInfo.objects.create(host_ip=obj.cleaned_data['host_ip'],
-                                                        app_type=obj.cleaned_data['app_type'],
-                                                        host_group_id=obj.cleaned_data['host_group'],
-                                                        host_pass=obj.cleaned_data['host_pass'],
-                                                        host_port=obj.cleaned_data['host_port'],
-                                                        host_user=obj.cleaned_data['host_user']
-
-                                                        )
-                except Exception as e:
-                    print('3333', e)
-            return HttpResponse(json.dumps(ret))
-        else:
-            ret = {'flag': 0, 'data': obj.errors}
-            return HttpResponse(json.dumps(ret))
-    else:
-        return render(request, 'manage.html', {'userinfo': user_prive,
-                                               'request_path': request_path,
-                                               'host_list': result,
-                                               'obj': obj})
-
-
 
 @auth
 def hostgroup_append(request):
@@ -181,6 +139,100 @@ def hostgroup_append(request):
                 host_group_jd=group_desc
             )
             result_dict = {'flag': 1, 'msg': 'GroupName: %s append successful' % group_name}
+    else:
+        result_dict = {'flag': 0, 'msg': 'GroupName: is None'}
+    return HttpResponse(json.dumps(result_dict))
+
+
+
+@auth
+def host_manage(request):
+    obj = cmdb_forms.HostAppend()
+    request_path = request.get_full_path()
+    user_cookie = get_user_cookie(request)
+    user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
+    result = cmdb_models.HostInfo.objects.all()
+    if request.method == 'POST':
+        obj = cmdb_forms.HostAppend(request.POST)
+        rel = obj.is_valid()
+        if rel:
+            ip = obj.cleaned_data['host_ip']
+            new_ip = functions.num2ip(1, ip)
+            obj.cleaned_data['host_ip'] = new_ip
+            exist_ip = cmdb_models.HostInfo.objects.filter(host_ip=new_ip).first()
+            if exist_ip:
+                ret = {'flag': 0, 'data': {'ip': '主机已经存在'}}
+            else:
+                try:
+                    r = cmdb_models.HostInfo.objects.create(host_ip=functions.num2ip(1,obj.cleaned_data['host_ip']),
+                                                        app_type_id=obj.cleaned_data['app_type'],
+                                                        host_group_id=obj.cleaned_data['host_group'],
+                                                        host_pass=obj.cleaned_data['host_pass'],
+                                                        host_port=obj.cleaned_data['host_port'],
+                                                        host_user=obj.cleaned_data['host_user'])
+                    app_user = obj.cleaned_data['app_user']
+                    app_pass = obj.cleaned_data['app_pass']
+                    app_port = obj.cleaned_data['app_port']
+                    if app_user or app_pass or app_port:
+                        cmdb_models.HostInfoAuth.objects.create(app_user=app_user,
+                                                                app_port=app_port,
+                                                                app_pass=app_pass,
+                                                                host=r)
+                    ret = {'flag': 1, 'data': None}
+                except Exception as e:
+                    ret = {'flag': 0, 'data': e}
+                    print('主机添加或更新有问题：', e)
+            return HttpResponse(json.dumps(ret))
+        else:
+            ret = {'flag': 0, 'data': obj.errors}
+            return HttpResponse(json.dumps(ret))
+    else:
+        return render(request, 'manage.html', {'userinfo': user_prive,
+                                               'request_path': request_path,
+                                               'host_list': result,
+                                               'obj': obj})
+
+
+def host_append(request):
+    host_ip = request.POST.get('host_ip', None)
+    app_type_id = request.POST.get('app_type', None)
+    host_group_id = request.POST.get('host_group', None)
+    host_pass = request.POST.get('host_pass', None)
+    host_port = request.POST.get('host_port', None)
+    host_user = request.POST.get('host_user', None)
+    app_user = request.POST.get('app_user', None)
+    app_pass = request.POST.get('app_pass', None)
+    app_port = request.POST.get('app_port', None)
+    ret = cmdb_forms.HostAppend(request.POST)
+    if ret.is_valid():
+        ip = functions.num2ip(1, host_ip)
+        try:
+            cmdb_models.HostInfo.objects.filter(host_ip=ip).update(
+                app_type_id=app_type_id,
+                host_group_id=host_group_id,
+                host_pass=host_pass,
+                host_port=host_port,
+                host_user=host_user
+            )
+            r = cmdb_models.HostInfo.objects.filter(host_ip=ip).first()
+            if app_user or app_pass or app_port:
+                auth_ret = cmdb_models.HostInfoAuth.objects.filter(host=r).count()
+                if auth_ret:
+                    cmdb_models.HostInfoAuth.objects.filter(host=r).update(
+                        app_port=app_port,
+                        app_pass=app_pass,
+                        app_user=app_user
+                    )
+                else:
+                    cmdb_models.HostInfoAuth.objects.create(
+                        host=r,
+                        app_port=app_port,
+                        app_pass=app_pass,
+                        app_user=app_user
+                    )
+            result_dict = {'flag': 1, 'msg': None}
+        except Exception as e:
+            result_dict = {'flag': 0, 'msg': '数据更新失败:%s' % e}
     else:
         result_dict = {'flag': 0, 'msg': 'GroupName: is None'}
     return HttpResponse(json.dumps(result_dict))

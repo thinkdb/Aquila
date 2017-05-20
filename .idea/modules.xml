@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Aquila.iml" filepath="$PROJECT_DIR$/.idea/Aquila.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../MagicSql/.idea/MagicSql.iml" filepath="$PROJECT_DIR$/../MagicSql/.idea/MagicSql.iml" />
     </modules>
   </component>
 </project>

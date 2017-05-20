@@ -14,5 +14,5 @@ urlpatterns = [
     url(r'^backend/hostgroup_manage.html$', views.hostgroup_manage, name='hostgroup_manage'),
     url(r'backend/hostgroup_append.html$', views.hostgroup_append, name='cmdb_hostgroup_append'),
     url(r'backend/host_manage.html$', views.host_manage, name='cmdb_host_manage'),
-    # url(r'backend/host_append.html$', views.host_append, name='cmdb_host_append'),
+    url(r'backend/host_append.html$', views.host_append, name='cmdb_host_append'),
 ]

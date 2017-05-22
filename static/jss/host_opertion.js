@@ -2,17 +2,17 @@
  * Created by Administrator on 2017/4/26.
  */
 /* 转换数字为ip地址 */
-$(function () {
-    $('td[id="num_to_ip"]').each(function () {
-        var num_ip = $(this).text();
-        if(num_ip < 0 || num_ip > 0xFFFFFFFF){
-            throw ("The number is not normal!");
-        }
-        var new_ip = (num_ip>>>24) + "." + (num_ip>>16 & 0xFF) + "." + (num_ip>>8 & 0xFF) + "." + (num_ip & 0xFF);
-        $(this).text(new_ip);
-    });
-
-});
+// $(function () {
+//     $('td[id="num_to_ip"]').each(function () {
+//         var num_ip = $(this).text();
+//         if(num_ip < 0 || num_ip > 0xFFFFFFFF){
+//             throw ("The number is not normal!");
+//         }
+//         var new_ip = (num_ip>>>24) + "." + (num_ip>>16 & 0xFF) + "." + (num_ip>>8 & 0xFF) + "." + (num_ip & 0xFF);
+//         $(this).text(new_ip);
+//     });
+//
+// });
 
 $(function(){
     $.ajaxSetup({

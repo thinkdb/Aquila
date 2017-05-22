@@ -70,7 +70,7 @@ class InceptionWorkOrderInfo(models.Model):
     id = models.AutoField(primary_key=True)
     work_order_id = models.BigIntegerField(unique=True)
     work_user = models.CharField(max_length=50)
-    db_host = models.UnsignedIntegerField(default='1000000')
+    db_host = models.CharField(max_length=45)
     db_name = models.CharField(max_length=50, default='test_db')
     end_time = models.DateTimeField(default='1980-01-01 01:01:01')
     review_user = models.CharField(max_length=50)

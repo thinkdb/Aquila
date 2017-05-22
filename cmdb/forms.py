@@ -6,6 +6,8 @@ from cmdb import models as cmdb_models
 
 
 class HostAppend(forms.Form):
+    host_id = fields.CharField(widget=widgets.TextInput(attrs={'style': 'display: none;'}),
+                               required=False)
     host_ip = fields.GenericIPAddressField(error_messages={'required': '主机地址不能为空', 'invalid': 'IP地址不合法'},
                                            protocol='ipv4',
                                            label='主机地址',

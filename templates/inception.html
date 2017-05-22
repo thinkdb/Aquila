@@ -18,7 +18,7 @@
             {% for items in ince_form %}
 
                 <div>
-                        <label>{{ items.label }}</label>
+                    <label>{{ items.label }}</label>
                     <div style="margin-bottom: 10px;">
                         {{ items }}
                     </div>
@@ -28,11 +28,12 @@
                 </div>
 
             {% endfor %}
-
+            <div>
+                <span style="color: red;"> {{ app_err }} </span>
+            </div>
             <div class="form-group">
-                <input id="sql_own_reviews" type="submit" class="btn btn-lg btn-info"  value="自审核"/>
-                <input id="sql_own_reviews" type="reset" class="btn btn-lg btn-info"  value="重置"/>
-                <input id="sql_commit" type="button" class="btn btn-lg btn-info" value="提交审核" />
+                <input id="sql_own_reviews" type="submit" class="btn btn-lg btn-info"  value="提交SQL"/>
+                <button type="reset" class="btn ince_but_ret">重置</button>
             </div>
 
         </form>

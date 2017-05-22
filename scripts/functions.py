@@ -14,7 +14,12 @@ import hashlib
 class DBAPI(object):
     def __init__(self, host, user, password, port, database):
         self.conn = pymysqldb.connect(host=host, user=user, passwd=password, port=int(port),
-                                       database=database, autocommit=1, charset='utf8')
+                                       database=database, autocommit=1, charset='utf8',
+                                      connect_timeout=5, read_timeout=5, write_timeout=5)
+        try:
+            self.conn.select_db(database)
+        except:
+            pass
         self.cur = self.conn.cursor()
 
     def conn_query(self, sql):
@@ -197,10 +202,8 @@ def tran_audit_result(result):
             a = ''
             for id, rows in enumerate(error_result.split('\n')):
                 result_dict[keys]['error_msg']['status'] = 1
-                # result_dict[keys]['error_msg']['error_msgs'][id] = rows
                 a = a+rows+'---'
             result_dict[keys]['error_msg']['error_msgs'] = a
-            #result_dict[keys]['error_msg']['error_msgs'] = a
 
         else:
             result_dict[keys]['error_msg']['status'] = 0

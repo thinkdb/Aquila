@@ -482,3 +482,22 @@ table.dataTable thead .sorting:after {
 #exit_edit:hover{
   cursor: pointer;
 }
+
+.ince_but_ret{
+  color: #0a0a0a;
+  background-color: #5bc0de;
+
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.3333333;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+.ince_but_ret:hover{
+  border-color: #269abc;
+}
+
+.btn:hover{
+  color: #fff;
+  text-decoration: none;
+}

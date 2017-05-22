@@ -1,10 +1,19 @@
-<form id="form" action="{% url 'cmdb_host_manage' %}" method="post">
+<form id="form"  method="post">
 {% csrf_token %}
 {% for item in obj %}
     {% if item.label == '应用类型' or item.label == '主机组' %}
         <div class="form-group">
             <div>
                 <lable>{{ item.label }}</lable>{{ item }}
+            </div>
+        </div>
+    {% elif item.label == 'Host id' %}
+        <div class="form-group">
+            <div>
+                <lable style="display: none">{{ item.label }}</lable>
+            </div>
+            <div style="display: none">
+                {{ item }}
             </div>
         </div>
     {% else %}

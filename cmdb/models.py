@@ -59,7 +59,7 @@ class UserHostRelationship(models.Model):
 
 
 class HostInfo(models.Model):
-    host_ip = models.UnsignedIntegerField(unique=True)
+    host_ip = models.CharField(max_length=45, unique=True)
     app_type = models.ForeignKey(to='AppType', to_field='id', db_constraint=False)
     host_user = models.CharField(max_length=20)
     host_pass = models.CharField(max_length=30)

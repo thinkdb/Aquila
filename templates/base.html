@@ -126,10 +126,10 @@
                                             <a href="{% url 'dbms_sql_audit' %}">SQL 审核</a>
                                         </li>
                                         <li>
-                                            <a href="#">SQL 执行</a>
+                                            <a href="{% url 'dbms_work_runing' %}">SQL 执行</a>
                                         </li>
                                         <li>
-                                            <a href="#">工单查询</a>
+                                            <a href="{% url 'dbms_work_reviews' %}">工单查询</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -170,7 +170,9 @@
                 <h6 class="page-header"></h6>
             </div>
         </div>
-        {% block body_body %}{% endblock %}
+        {% block body_body %}
+
+        {% endblock %}
     </div>
 
 

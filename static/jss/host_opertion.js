@@ -59,9 +59,28 @@ $(function(){
         // alert(a);
     });
 
-    $('#host_group_delete').click(function () {
-        // $('.shade_layer').removeClass('check_dis_flag');
+    $('tbody #workruning_smt').click(function () {
+        // 执行工单内容
+            $.ajax({
+                url: '/dbms/inception/work_runing.html',
+                type: 'POST',
+                data: {'wid':$(this).parent().parent().find('#wid').text(),
+                    'host_ip': $(this).parent().parent().find('#host_ip').text(),
+                    'sql_content': $(this).parent().parent().find('#sql_content').text()},
+                dataType: 'json',
+                headers: {'X-CSRFtoken': $.cookie('csrftoken')},
+                success: function (data) {
+                    if(data==1){
+                        alert('已提交到后台执行，请到工单查询里面查看结果');
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            })
+
     });
+
     $('#dataTables-example').DataTable({
         responsive: true
     });

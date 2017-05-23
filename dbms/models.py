@@ -75,8 +75,8 @@ class InceptionWorkOrderInfo(models.Model):
     end_time = models.DateTimeField(default='1980-01-01 01:01:01')
     review_user = models.CharField(max_length=50)
     review_time = models.DateTimeField(default='1980-01-01 01:01:01')
-    review_status = models.TinyIntegerField(default=10)
-    work_status = models.TinyIntegerField(default=10)
+    review_status = models.TinyIntegerField(default=10)    # 未审核 0 表示通过， 1表示驳回
+    work_status = models.TinyIntegerField(default=10)      # 示执行 0 表示执行成功， 1表示执行失败
     r_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -87,9 +87,9 @@ class InceptionAuditDetail(models.Model):
     id = models.AutoField(primary_key=True)
     work_order = models.ForeignKey(to='InceptionWorkOrderInfo', on_delete=models.CASCADE, to_field='work_order_id', db_constraint=False)
     sql_sid = models.UnsignedSmallIntegerField()              # 工单中的sql序号
-    status = models.UnsignedSmallIntegerField()               # RERUN,CHECKED, EXECUTED, None
+    status = models.UnsignedSmallIntegerField()               # RERUN,CHECKED, EXECUTED, None 0,1,2,3
     err_id = models.UnsignedSmallIntegerField()               # 0, 1, 2
-    stage_status = models.UnsignedSmallIntegerField()         # Execute Successfully, Execute Successfully\nBackup successfully, Execute Successfully\nBackup filed
+    stage_status = models.UnsignedSmallIntegerField()         # Execute Successfully, Execute Successfully\nBackup successfully, Execute Successfully\nBackup filed   0, 1, 2, 3
     error_msg = models.CharField(max_length=1000)             # None, str,
     sql_content = models.CharField(max_length=1000)           # sql内容
     aff_row = models.UnsignedSmallIntegerField()              # 影响的行数

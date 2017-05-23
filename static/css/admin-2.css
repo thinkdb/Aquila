@@ -501,3 +501,20 @@ table.dataTable thead .sorting:after {
   color: #fff;
   text-decoration: none;
 }
+
+.work_details{
+  background-color: #46b8da;
+  color: #fcf8e3;
+  font-size: 18px;
+  padding: 6px;
+}
+.work_runing{
+  background-color:#337ab7;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 6px 12px;
+  color: white;
+  border: 1px solid transparent;
+}

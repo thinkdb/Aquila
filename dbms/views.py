@@ -5,11 +5,9 @@ from django.shortcuts import HttpResponse
 from dbms import models as dbms_models
 from dbms import forms as dbms_forms
 from cmdb import models as cmdb_models
-from django import forms
 from scripts import functions
 from cmdb.views import auth
 from cmdb.views import get_user_cookie
-import json
 
 
 @auth
@@ -56,19 +54,38 @@ def sql_reviews(request):
 
 @auth
 def sql_audit(request):
+    """
+    审核列表页面
+    """
+    user_cookie = get_user_cookie(request)
+    user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
+    user_work_order_list = dbms_models.InceptionWorkOrderInfo.objects.filter(review_user=user_cookie, review_status=10).all()
+    return render(request, 'ince_sql_audit.html', {'userinfo': user_prive, 'work_order_list': user_work_order_list})
+
+
+@auth
+def sql_audit_commit(request):
+    """
+    工单审核通过与否
+    """
+    work_id = request.POST.get('work_id', None)
     user_cookie = get_user_cookie(request)
     user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
     user_work_order_list = dbms_models.InceptionWorkOrderInfo.objects.filter(review_user=user_cookie).all()
-    # 使用多表关联， __ 反向查找
-    return render(request, 'ince_sql_audit.html', {'userinfo': user_prive, 'work_order_list': user_work_order_list})
+    if request.POST.get('1', None):
+        status = 0
+    else:
+        status = 1
+    dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=work_id).update(review_status=status)
+    return redirect('sql_audit.html', {'userinfo': user_prive, 'work_order_list': user_work_order_list})
 
 @auth
 def sql_audit_detail(request, wid):
+    """
+    审核详情页
+    """
     work_details = dbms_models.InceptionAuditDetail.objects.filter(work_order_id=wid)
     work_info = dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid)
-    # for lines in work_details:
-    #     print(lines)
-
     return render(request, 'audit_details.html', {'detail_result': work_details, "work_info": work_info})
 
 
@@ -81,20 +98,37 @@ def install(request):
     return HttpResponse('install')
 
 
-def ince_insert_db(result_dict, user_cookie, host_ip, review_user, db_name, sql_content):
-    w_id = functions.get_uuid()
-    work_user = user_cookie
-    dbms_models.InceptionWorkOrderInfo.objects.create(
-        work_order_id=w_id,
-        work_user=work_user,
-        review_user=review_user,
-        db_host=host_ip,
-        db_name=db_name
-    )
-    dbms_models.InceptionWorkSQL.objects.create(
-        sql_content=sql_content,
-        work_order_id=w_id
-    )
+def ince_insert_db(result_dict, user_cookie, host_ip, review_user, db_name, sql_content, wid=0):
+    """
+    工单审核信息入库
+    """
+    w_id = wid
+    if w_id:
+        work_status = 0
+        for k in result_dict:
+            if result_dict[k]['stage_status'] == 'Execute Successfully' \
+                    or result_dict[k]['stage_status'] == 'Execute Successfully\nBackup successfully':
+                work_status = 0
+            else:
+                work_status = 1
+                break
+
+        dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid).update(work_status=work_status)
+
+    else:
+        w_id = functions.get_uuid()
+        work_user = user_cookie
+        dbms_models.InceptionWorkOrderInfo.objects.create(
+            work_order_id=w_id,
+            work_user=work_user,
+            review_user=review_user,
+            db_host=host_ip,
+            db_name=db_name
+        )
+        dbms_models.InceptionWorkSQL.objects.create(
+            sql_content=sql_content,
+            work_order_id=w_id
+        )
     for item in result_dict.values():
         sql_sid = item['sql_sid']
         if item['status'] == 'CHECKED':
@@ -145,36 +179,70 @@ def ince_insert_db(result_dict, user_cookie, host_ip, review_user, db_name, sql_
         new.sql_hash = sql_hash
         new.save()
 
-
-def work_review():
+@auth
+def work_reviews(request):
     """
-    公共信息
-    work_order_id
-    work_user
-
-    查看工单，只能查看自己提前的工单信息
-
-    sql_fulltext
-    db_host
-    db_name
-    review_user
-    review_status
-    work_status
-    r_time
-
-    工单详情
-
-    sql_sid
-    status
-    err
-    stage_status
-    error_msg
-    sql_content
-    aff_row
-    execute_time
-    rollback_id
-    sql_hash
-    r_time
-    :return:
+    工单查询
     """
-    pass
+    user_cookie = get_user_cookie(request)
+    user_name = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
+    ret = dbms_models.InceptionWorkOrderInfo.objects.filter(work_user=user_name).all()
+    return render(request, 'work_reviews.html', {'work_obj': ret, 'userinfo': user_name})
+
+
+@auth
+def work_detail(request, wid):
+    """
+    查看工单的详情页面
+    """
+    user_cookie = get_user_cookie(request)
+    user_name = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
+    work_details = dbms_models.InceptionAuditDetail.objects.filter(work_order_id=wid)
+    work_info = dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid)
+    return render(request, 'work_details.html', {'detail_result': work_details, "work_info": work_info, 'userinfo': user_name})
+
+
+@auth
+def work_runing(request):
+    user_cookie = get_user_cookie(request)
+    user_name = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
+    # 获取当前用户所有的已经审核成功的工单
+    all_work = dbms_models.InceptionWorkOrderInfo.objects.filter(work_user=user_name, review_status=0, work_status=10).all()
+    if request.method == 'GET':
+        return render(request, 'work_runing.html', {'userinfo': user_name, 'all_work': all_work})
+
+    if request.method == 'POST':
+
+        wid = request.POST.get('wid', None)
+        host_ip = request.POST.get('host_ip', None)
+        sql_content = request.POST.get('sql_content', None)
+        r = cmdb_models.HostInfo.objects.filter(host_ip=host_ip).all()
+        for row in r:
+            app_pass = row.hostinfoauth_set.all()[0].app_pass
+            app_user = row.hostinfoauth_set.all()[0].app_user
+            app_port = row.hostinfoauth_set.all()[0].app_port
+
+        result = functions.ince_run_sql(host_ip, sql_content, db_port=app_port, db_user=app_user,
+                                            db_passwd=app_pass, enable_check=0, enable_execute=1, enable_ignore_warnings=1)
+        tran_result = functions.tran_audit_result(result)
+        # for k in tran_result:
+        #     print(tran_result[k])
+        ince_insert_db(result_dict=tran_result, user_cookie='', host_ip='', review_user='', db_name='', sql_content=sql_content, wid=wid)
+
+        return HttpResponse(1)
+    # 主机地址， 账号，密码，port, enable_check=0, enable_execute=1
+
+
+    db_host_info = cmdb_models.HostInfoAuth.objects.filter(host_id='').all().values(
+        'app_pass', 'app_user', 'app_port', 'host__host_ip')
+    if db_host_info:
+        for item in db_host_info:
+            sql_content = ''
+            app_user = item['app_user']
+            app_pass = item['app_pass']
+            app_port = item['app_port']
+            host_ip = item['host__host_ip']
+            result = functions.ince_run_sql(host_ip, sql_content, db_port=int(app_port), db_user=app_user,
+                                            db_passwd=app_pass)
+        tran_result = functions.tran_audit_result(result)
+    return HttpResponse('111')

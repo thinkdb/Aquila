@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+
+ {% block css_flag %}
+
+        <link href="/static/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+        <!-- DataTables Responsive CSS -->
+        <link href="/static/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+        <link rel="stylesheet" href="/static/css/iframe_host_manage.css"/>
+{% endblock %}
+
+
+
+{% block body_body %}
+
+
+    <div class="panel-body" id="table_ip_num">
+        <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+        <thead>
+        <tr>
+            <td>工单号</td>
+            <td>主机地址</td>
+            <td>库名</td>
+            <td>sql 文本内容</td>
+            <td>提交时间</td>
+            <td>审核人</td>
+            <td>工单状态</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+            {% for row in all_work %}
+                <tr>
+                    <td id="wid">{{ row.work_order_id }}</td>
+                    <td id="host_ip">{{ row.db_host }}</td>
+                    <td>{{ row.db_name }}</td>
+
+                    <td id="sql_content">{{ row.inceptionworksql_set.all.0.sql_content }}</td>
+                    <td>{{ row.r_time }}</td>
+                    <td>{{ row.review_user }}</td>
+                    <td>
+                        {% if row.work_status == 10 %}
+                            <span class="sql_audit_info sql_audit_info_info">未执行</span>
+                        {% elif row.work_status == 0 %}
+                            <span class="sql_audit_info sql_audit_info_success">执行成功</span>
+                        {% else %}
+                            <span class="sql_audit_info sql_audit_info_warning">执行失败</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <input id="workruning_smt" type="submit" class="work_runing" value="执行工单"/>
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block jss_flag %}
+    <script src="/static/vendor/datatables/js/jquery.dataTables.js"></script>
+    <script src="/static/jss/jquery.cookie.js"></script>
+    <script src="/static/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="/static/vendor/datatables-responsive/dataTables.responsive.js"></script>
+
+    <script src="/static/jss/host_opertion.js"></script>
+{% endblock %}

@@ -8,12 +8,6 @@
         <span>工单发起人:</span><span>{{ item.work_user }}</span>
         <span>工单发起时间:</span><span>{{ item.r_time }}</span>
     {% endfor %}
-    <form action="{% url 'sql_audit_commit' %}" method="post">
-        {% csrf_token %}
-        <input style="display: None" name="work_id" value="{{ work_info.0.work_order_id }}"/>
-        <input type="submit" class="btn btn-lg btn-info" name="1" value="通过"/>
-        <input type="submit" class="btn btn-lg btn-info" name="2" value="驳回"/>
-    </form>
     </div>
     <div>
         <table class="table table-hover" >

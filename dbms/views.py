@@ -8,7 +8,8 @@ from cmdb import models as cmdb_models
 from scripts import functions
 from cmdb.views import auth
 from cmdb.views import get_user_cookie
-
+import datetime
+import threading
 
 @auth
 def index(request):
@@ -37,14 +38,19 @@ def sql_reviews(request):
                     app_pass = item['app_pass']
                     app_port = item['app_port']
                     host_ip = item['host__host_ip']
-                    result = functions.ince_run_sql(host_ip, sql_content, db_port=int(app_port), db_user=app_user,
-                                                     db_passwd=app_pass)
+                # 分析出主从关系
+                master_ip = functions.get_master(host_ip, app_user, app_pass, app_port, '')
+                result = functions.ince_run_sql(master_ip, sql_content, db_port=int(app_port), db_user=app_user,
+                                                 db_passwd=app_pass)
                 tran_result = functions.tran_audit_result(result)
                 ret['ince_result'] = tran_result
-                if check_flag:
+                if check_flag == '1':
                     # 判断是否审核结果是否需要入库
                     r = cmdb_models.UserInfo.objects.filter(id=ince_form_obj.cleaned_data['review_user']).first()
-                    ince_insert_db(tran_result, user_cookie, host_ip, r, ince_form_obj.cleaned_data['db_name'], sql_content)
+                    if r == user_prive:
+                        ret['app_err'] = '自己不能审核自己的工单'
+                        return render(request, 'inception.html', ret)
+                    ince_insert_db(tran_result, user_cookie, master_ip, r, ince_form_obj.cleaned_data['db_name'], sql_content)
             else:
                 ret['app_err'] = '主机未配置账号密码, 请联系管理员'
         return render(request, 'inception.html', ret)
@@ -76,7 +82,8 @@ def sql_audit_commit(request):
         status = 0
     else:
         status = 1
-    dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=work_id).update(review_status=status)
+    review_time = datetime.datetime.now()
+    dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=work_id).update(review_status=status, review_time=review_time)
     return redirect('sql_audit.html', {'userinfo': user_prive, 'work_order_list': user_work_order_list})
 
 @auth
@@ -112,8 +119,9 @@ def ince_insert_db(result_dict, user_cookie, host_ip, review_user, db_name, sql_
             else:
                 work_status = 1
                 break
+        end_time = datetime.datetime.now()
 
-        dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid).update(work_status=work_status)
+        dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid).update(work_status=work_status, end_time=end_time)
 
     else:
         w_id = functions.get_uuid()
@@ -214,35 +222,42 @@ def work_runing(request):
     if request.method == 'POST':
 
         wid = request.POST.get('wid', None)
-        host_ip = request.POST.get('host_ip', None)
         sql_content = request.POST.get('sql_content', None)
+        host_ip = request.POST.get('host_ip', None)
         r = cmdb_models.HostInfo.objects.filter(host_ip=host_ip).all()
         for row in r:
             app_pass = row.hostinfoauth_set.all()[0].app_pass
             app_user = row.hostinfoauth_set.all()[0].app_user
             app_port = row.hostinfoauth_set.all()[0].app_port
 
-        result = functions.ince_run_sql(host_ip, sql_content, db_port=app_port, db_user=app_user,
-                                            db_passwd=app_pass, enable_check=0, enable_execute=1, enable_ignore_warnings=1)
-        tran_result = functions.tran_audit_result(result)
-        # for k in tran_result:
-        #     print(tran_result[k])
-        ince_insert_db(result_dict=tran_result, user_cookie='', host_ip='', review_user='', db_name='', sql_content=sql_content, wid=wid)
+        # 优化成任务计划来执行，提交后直接返回提交成功，执行结果需要在工单查询中查看
+        # 添加任务表，
+            master_ip = functions.get_master(host_ip, app_user, app_pass, app_port, '')
 
+            dbms_models.WorkOrderTask.objects.create(wid=wid, app_user=app_user, app_pass=app_pass, host_ip=master_ip, app_port=app_port)
+            dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid).update(work_status=2)
+
+            t = threading.Thread(target=Task())
+            t.start()
         return HttpResponse(1)
-    # 主机地址， 账号，密码，port, enable_check=0, enable_execute=1
 
 
-    db_host_info = cmdb_models.HostInfoAuth.objects.filter(host_id='').all().values(
-        'app_pass', 'app_user', 'app_port', 'host__host_ip')
-    if db_host_info:
-        for item in db_host_info:
-            sql_content = ''
-            app_user = item['app_user']
-            app_pass = item['app_pass']
-            app_port = item['app_port']
-            host_ip = item['host__host_ip']
-            result = functions.ince_run_sql(host_ip, sql_content, db_port=int(app_port), db_user=app_user,
-                                            db_passwd=app_pass)
-        tran_result = functions.tran_audit_result(result)
-    return HttpResponse('111')
+def Task():
+    task_all = dbms_models.WorkOrderTask.objects.all()
+    if task_all:
+        for item in task_all:
+            master_ip = item.host_ip
+            app_port = item.app_port
+            app_user = item.app_user
+            app_pass = item.app_pass
+            wid = item.wid
+            sql_content = dbms_models.InceptionWorkSQL.objects.filter(work_order_id=wid).first().sql_content
+
+            dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid).update(work_status=3)
+            result = functions.ince_run_sql(master_ip, sql_content, db_port=app_port, db_user=app_user,
+                                        db_passwd=app_pass, enable_check=0, enable_execute=1, enable_ignore_warnings=1)
+            tran_result = functions.tran_audit_result(result)
+            ince_insert_db(result_dict=tran_result, user_cookie='', host_ip='', review_user='', db_name='',
+                       sql_content=sql_content, wid=wid)
+
+            dbms_models.WorkOrderTask.objects.filter(wid=wid).delete()

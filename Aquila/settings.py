@@ -153,9 +153,11 @@ INCEPTION = {
         'BACKUP_USER': 'root',
         'BACKUP_PASSWORD': '123456',
         'BACKUP_PORT': 3306,
-        'BACKUP_HOST': '127.0.0.1',
+        'BACKUP_HOST': '192.168.1.6',
     },
 }
 
 # 用户密码加密 KEY
 USER_ENCRYPT_KEY = '3df6a1341e8b'
+
+ALLOWED_HOSTS = ['*']

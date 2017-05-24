@@ -75,8 +75,8 @@ class InceptionWorkOrderInfo(models.Model):
     end_time = models.DateTimeField(default='1980-01-01 01:01:01')
     review_user = models.CharField(max_length=50)
     review_time = models.DateTimeField(default='1980-01-01 01:01:01')
-    review_status = models.TinyIntegerField(default=10)    # 未审核 0 表示通过， 1表示驳回
-    work_status = models.TinyIntegerField(default=10)      # 示执行 0 表示执行成功， 1表示执行失败
+    review_status = models.TinyIntegerField(default=10)    # 10表示未审核， 0 表示通过， 1表示驳回
+    work_status = models.TinyIntegerField(default=10)      # 10表示未执行， 0 表示执行成功， 1表示执行失败, 2.进行执行队列， 3, 正在执行
     r_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -92,7 +92,7 @@ class InceptionAuditDetail(models.Model):
     stage_status = models.UnsignedSmallIntegerField()         # Execute Successfully, Execute Successfully\nBackup successfully, Execute Successfully\nBackup filed   0, 1, 2, 3
     error_msg = models.CharField(max_length=1000)             # None, str,
     sql_content = models.CharField(max_length=1000)           # sql内容
-    aff_row = models.UnsignedSmallIntegerField()              # 影响的行数
+    aff_row = models.IntegerField()              # 影响的行数
     rollback_id = models.CharField(max_length=50)             # rollback_id
     backup_dbname = models.CharField(max_length=100)          # 存放备份的库名
     execute_time = models.IntegerField()                      # sql 执行好时，*1000， 按毫秒存放
@@ -112,3 +112,9 @@ class InceptionWorkSQL(models.Model):
         db_table = 'dbms_ince_work_sql_content'
 
 
+class WorkOrderTask(models.Model):
+    host_ip = models.CharField(max_length=45, unique=True)
+    app_user = models.CharField(max_length=20)
+    app_pass = models.CharField(max_length=30)
+    app_port = models.SmallIntegerField()
+    wid = models.BigIntegerField(unique=True)

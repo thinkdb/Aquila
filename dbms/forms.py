@@ -49,5 +49,5 @@ class InceForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(InceForm, self).__init__(*args, **kwargs)
         self.fields['db_ip'].widget.choices = cmdb_models.HostInfo.objects.values_list('id', 'host_ip')
-        self.fields['review_user'].widget.choices = cmdb_models.UserInfo.objects.values_list('id', 'user_name')
+        self.fields['review_user'].widget.choices = cmdb_models.UserInfo.objects.exclude(role_id__in=[2]).values_list('id', 'user_name')
 

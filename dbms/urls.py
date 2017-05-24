@@ -17,5 +17,4 @@ urlpatterns = [
 
     url(r'^backup/', views.backup, name='backup'),
     url(r'^install/', views.install, name='install'),
-
 ]

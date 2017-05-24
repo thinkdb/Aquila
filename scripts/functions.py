@@ -13,16 +13,20 @@ import hashlib
 
 class DBAPI(object):
     def __init__(self, host, user, password, port, database):
-        self.conn = pymysqldb.connect(host=host, user=user, passwd=password, port=int(port),
+        try:
+            self.conn = pymysqldb.connect(host=host, user=user, passwd=password, port=int(port),
                                        database=database, autocommit=1, charset='utf8',
                                       connect_timeout=5, read_timeout=5, write_timeout=5)
-        try:
-            self.conn.select_db(database)
-        except:
-            pass
-        self.cur = self.conn.cursor()
+
+            #self.conn.select_db(database)
+            self.cur = self.conn.cursor()
+            self.error = None
+        except Exception as e:
+            self.error = e
+            self._error()
 
     def conn_query(self, sql):
+
         try:
             rel = self.cur.execute(sql)
             result = self.cur.fetchall()
@@ -31,6 +35,7 @@ class DBAPI(object):
         return result
 
     def conn_dml(self, sql):
+
         try:
             rel = self.cur.execute(sql)
             if rel:
@@ -41,6 +46,7 @@ class DBAPI(object):
             return e
 
     def dml_commit(self):
+
         self.conn.commit()
 
     def dml_rollback(self):
@@ -49,6 +55,10 @@ class DBAPI(object):
     def close(self):
         self.cur.close()
         self.conn.close()
+
+    def _error(self):
+        if self.error:
+            return self.error
 
 
 class FtpServer(object):
@@ -126,6 +136,7 @@ def ince_run_sql(db_host, sql_content, db_user, db_passwd, db_port=3306, enable_
         db = DBAPI(host=ince_host, user='', password='', database='', port=ince_port)
         result = db.conn_query(run_sql)
     except Exception as e:
+        print('++++++++++++',e)
         result = e
     return result
 
@@ -208,3 +219,20 @@ def tran_audit_result(result):
         else:
             result_dict[keys]['error_msg']['status'] = 0
     return result_dict
+
+
+def get_master(db_ip, app_user, app_pass, app_port, database):
+    db = DBAPI(db_ip, app_user, app_pass, app_port, database)
+
+    if db.error:
+        return db.error
+    ret = db.conn_query('show slave status')
+    if len(ret):
+        master = ret[0][1]
+    else:
+        master = db_ip
+    return master
+
+
+
+

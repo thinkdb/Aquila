@@ -165,10 +165,7 @@ INCEPTION = {
     },
 }
 
-# 用户密码加密 KEY
+# 用户密码加密 KEY, 根据自己爱好设置
 USER_ENCRYPT_KEY = '3df6a1341e8b'
 
 ALLOWED_HOSTS = ['*']
-
-# CELERY_RESULT_BACKEND = 'django-db'
-#CELERY_RESULT_BACKEND = 'django-cache'

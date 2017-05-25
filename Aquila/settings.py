@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
+
+# Celery
+# import djcelery
+# djcelery.setup_loader()
+#
+# BROKER_URL = 'django://'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -40,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dbms',
     'cmdb',
+
 ]
 
 MIDDLEWARE = [
@@ -161,3 +169,6 @@ INCEPTION = {
 USER_ENCRYPT_KEY = '3df6a1341e8b'
 
 ALLOWED_HOSTS = ['*']
+
+# CELERY_RESULT_BACKEND = 'django-db'
+#CELERY_RESULT_BACKEND = 'django-cache'

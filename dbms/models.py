@@ -89,9 +89,9 @@ class InceptionAuditDetail(models.Model):
     sql_sid = models.UnsignedSmallIntegerField()              # 工单中的sql序号
     status = models.UnsignedSmallIntegerField()               # RERUN,CHECKED, EXECUTED, None 0,1,2,3
     err_id = models.UnsignedSmallIntegerField()               # 0, 1, 2
-    stage_status = models.UnsignedSmallIntegerField()         # Execute Successfully, Execute Successfully\nBackup successfully, Execute Successfully\nBackup filed   0, 1, 2, 3
-    error_msg = models.CharField(max_length=1000)             # None, str,
-    sql_content = models.CharField(max_length=1000)           # sql内容
+    stage_status = models.UnsignedSmallIntegerField()         # Audit completed： 0，Execute failed：1，  Execute Successfully：2, Execute Successfully\nBackup successfully：3, Execute Successfully\nBackup filed ：4
+    error_msg = models.TextField()             # None, str,
+    sql_content = models.TextField()           # sql内容
     aff_row = models.IntegerField()              # 影响的行数
     rollback_id = models.CharField(max_length=50)             # rollback_id
     backup_dbname = models.CharField(max_length=100)          # 存放备份的库名
@@ -113,7 +113,7 @@ class InceptionWorkSQL(models.Model):
 
 
 class WorkOrderTask(models.Model):
-    host_ip = models.CharField(max_length=45, unique=True)
+    host_ip = models.CharField(max_length=45)
     app_user = models.CharField(max_length=20)
     app_pass = models.CharField(max_length=30)
     app_port = models.SmallIntegerField()

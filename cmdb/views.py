@@ -195,6 +195,7 @@ def host_manage(request):
                                                'obj': obj})
 
 
+@auth
 def host_append(request):
     host_ip = request.get('host_ip', None)
     app_type_id = request.get('app_type', None)
@@ -244,3 +245,30 @@ def backend(request):
     user_cookie = get_user_cookie(request)
     user_prive = cmdb_models.UserInfo.objects.filter(user_name=user_cookie).first()
     return render(request, 'backend.html', {'userinfo': user_prive})
+
+
+@auth
+def group_del(request):
+    hid_list = request.POST.get('host_list', None)
+    gid_list = request.POST.get('group_list', None)
+    group_id_list = []
+    host_id_list = []
+    if len(hid_list):
+        for item in hid_list.split(','):
+            host_id_list.append(int(item))
+
+    if len(gid_list):
+        for item in gid_list.split(','):
+            group_id_list.append(int(item))
+    data = {'msg': '', 'flag': 1}
+    try:
+        if len(host_id_list):
+            r = cmdb_models.HostInfo.objects.filter(id__in=host_id_list).delete()
+            data['msg'] = r
+        if len(group_id_list):
+            r = cmdb_models.HostGroup.objects.filter(id__in=group_id_list).delete()
+            data['msg'] = r
+    except Exception as e:
+        data['msg'] = e
+        data['flag'] = 0
+    return HttpResponse(json.dumps(data))

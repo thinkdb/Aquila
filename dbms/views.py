@@ -235,10 +235,18 @@ def work_runing(request):
             master_ip = functions.get_master(host_ip, app_user, app_pass, app_port, '')
 
             dbms_models.WorkOrderTask.objects.create(wid=wid, app_user=app_user, app_pass=app_pass, host_ip=master_ip, app_port=app_port)
-            dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid).update(work_status=2)
+            #dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid).update(work_status=2)
+            dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid).update(work_status=3)
 
-            t = threading.Thread(target=Task())
-            t.start()
+            result = functions.ince_run_sql(master_ip, sql_content, db_port=app_port, db_user=app_user,
+                                            db_passwd=app_pass, enable_check=0, enable_execute=1,
+                                            enable_ignore_warnings=1)
+            tran_result = functions.tran_audit_result(result)
+            ince_insert_db(result_dict=tran_result, user_cookie='', host_ip='', review_user='', db_name='',
+                           sql_content=sql_content, wid=wid)
+
+            #r = dbms_models.InceptionAuditDetail.objects.filter(work_order_id=wid, err_id=3).first()
+
         return HttpResponse(1)
 
 

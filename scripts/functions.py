@@ -15,8 +15,7 @@ class DBAPI(object):
     def __init__(self, host, user, password, port, database):
         try:
             self.conn = pymysqldb.connect(host=host, user=user, passwd=password, port=int(port),
-                                       database=database, autocommit=1, charset='utf8',
-                                      connect_timeout=5, read_timeout=5, write_timeout=5)
+                                       database=database, autocommit=1, charset='utf8')
 
             #self.conn.select_db(database)
             self.cur = self.conn.cursor()
@@ -29,6 +28,7 @@ class DBAPI(object):
 
         try:
             rel = self.cur.execute(sql)
+            flag = 1
             result = self.cur.fetchall()
         except Exception as e:
             result = e
@@ -38,10 +38,8 @@ class DBAPI(object):
 
         try:
             rel = self.cur.execute(sql)
-            if rel:
-                pass
-            else:
-                return rel
+
+            return rel
         except Exception as e:
             return e
 
@@ -132,12 +130,9 @@ def ince_run_sql(db_host, sql_content, db_user, db_passwd, db_port=3306, enable_
     run_sql = inception_sql(db_user=db_user, db_passwd=db_passwd, db_host=db_host, sql_content=sql_content, db_port=db_port,
                             enable_check=enable_check, enable_execute=enable_execute, enable_split=enable_split,
                             enable_ignore_warnings=enable_ignore_warnings, sleep=sleep)
-    try:
-        db = DBAPI(host=ince_host, user='', password='', database='', port=ince_port)
-        result = db.conn_query(run_sql)
-    except Exception as e:
-        print('++++++++++++',e)
-        result = e
+    db = DBAPI(host=ince_host, user='', password='', database='', port=ince_port)
+    result = db.conn_query(run_sql)
+
     return result
 
 

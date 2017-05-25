@@ -49,11 +49,15 @@
                     </td>
                     <td>
                         {% if row.work_status == 10 %}
-                            <span class="sql_audit_info sql_audit_info_info">示执行</span>
+                            <span class="sql_audit_info sql_audit_info_info">未执行</span>
                         {% elif row.work_status == 0 %}
                             <span class="sql_audit_info sql_audit_info_success">执行成功</span>
+                        {% elif row.work_status == 2 %}
+                            <span class="sql_audit_info sql_audit_info_info">进入执行队列</span>
+                        {% elif row.work_status == 3 %}
+                            <span class="sql_audit_info sql_audit_info_running">正在执行....</span>
                         {% else %}
-                            <span class="sql_audit_info sql_audit_info_warning">执行失败</span>
+                            <span class="sql_audit_info sql_audit_info_error">执行失败</span>
                         {% endif %}</td>
                 </tr>
 

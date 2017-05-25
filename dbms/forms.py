@@ -8,11 +8,12 @@ from cmdb import models as cmdb_models
 class InceForm(forms.Form):
     db_ip = fields.CharField(
         label='数据库地址',
-        widget=widgets.Select(choices=[], attrs={'class': 'form-control',
-                                                 'id': 'chose_db_ip',
-                                                 'style': 'min-width:200px;'
-                                                          ' max-width:500px'
-                                                          ''})
+        widget=widgets.Select(choices=[],
+                              attrs={'class': 'form-control',
+                                     'id': 'chose_db_ip',
+                                     'style': 'min-width:200px;'
+                                              ' max-width:500px'
+                                              ''})
     )
     db_port = fields.IntegerField(
         widget=widgets.TextInput(attrs={'class': 'form-control',

@@ -9,7 +9,7 @@
                         <div class="panel">
                             <div>
                                 <button id="host_group_append" type="button" class="btn btn-primary">添加主机</button>
-                                  <button id="host_delete" type="button" class="btn btn-danger" style="margin-left: 200px;">批量删除</button>
+                                <button id="host_delete" type="button" class="btn btn-danger" style="margin-left: 200px;">批量删除</button>
                             </div>
                             <div class="panel-body">
                                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -30,7 +30,7 @@
                                     <tbody>
                                         {% if host_list %}
                                             {% for item in host_list %}
-                                                <tr id="hostgroup">
+                                                <tr id="host">
                                                     <td id="host_id" style="display: none;">{{ item.id }}</td>
                                                     <td><input type="checkbox" /></td>
                                                     <td id="num_to_ip">{{ item.host_ip }}</td>

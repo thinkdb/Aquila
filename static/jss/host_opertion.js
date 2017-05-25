@@ -61,6 +61,7 @@ $(function(){
 
     $('tbody #workruning_smt').click(function () {
         // 执行工单内容
+        alert('正在执行中, 请备重复执行!!!!!!')
             $.ajax({
                 url: '/dbms/inception/work_runing.html',
                 type: 'POST',
@@ -71,7 +72,7 @@ $(function(){
                 headers: {'X-CSRFtoken': $.cookie('csrftoken')},
                 success: function (data) {
                     if(data==1){
-                        alert('已提交到后台执行，请到工单查询里面查看结果');
+                        alert('已经执行结束, 请移步到《工单查询》中查看执行结果!!!!!!');
                     }
                 },
                 error: function (data) {
@@ -149,4 +150,42 @@ $('#host_append').click(function(){
 });
 
 
+$('#host_delete').click(function(){
+    var host_list = new Array();
+    var group_list = new Array();
+    $('#host input[type="checkbox"]').each(function () {
+        if($(this).prop('checked')){
+            var host = $(this).parent().parent().find('#host_id').text();
+            host_list.push(host);
+        }
+    });
+    $('#hostgroup input[type="checkbox"]').each(function () {
+        if($(this).prop('checked')){
+            var group = $(this).parent().parent().find('#hostgroup_id').text();
+            group_list.push(group);
+        }
+    });
+    var h_list = String(host_list);
+    var g_list = String(group_list);
+    $.ajax({
+        url: '/backend/group_del.html',
+        type: 'POST',
+        data: {"host_list": h_list, 'group_list': g_list},
+        dataType: 'json',
+        headers: {'X-CSRFtoken': $.cookie('csrftoken')},
+        success: function (data) {
+            flag = data['flag'];
+            msg = data['msg'];
+            if (flag){
+                alert('主机删除成功');
+                location.reload();
+            }
+            else
+                alert(msg);
+        },
+        error: function (data) {
+            alert(data);
+        }
+    });
 
+});

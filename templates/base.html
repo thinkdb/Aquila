@@ -28,32 +28,24 @@
                 <li><a href="{% url 'login' %}"><i class="fa fa-sign-out fa-fw"></i> 退出登录</a>
             </ul>
             <ul class="nav navbar-top-links navbar-right">
-                {% if userinfo.role.user_role_jd == '超级管理员' %}
+
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             <i class="fa fa-user fa-fw"></i>
                             <span>
                                 {{ userinfo.user_name }}
                             </span>
-                            <i class="fa fa-caret-down"></i>
+{#                            <i class="fa fa-caret-down"></i>#}
                         </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="{% url 'backend' %}"><i class="fa fa-user fa-fw"></i> 后台管理</a>
-                            </li>
-
-                        </ul>
+{#                        <ul class="dropdown-menu dropdown-user">#}
+{#                            <li><a href="{% url 'backend' %}"><i class="fa fa-user fa-fw"></i> 后台管理</a>#}
+{#                            </li>#}
+{##}
+{#                        </ul>#}
                     </li>
-                {% else %}
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-user fa-fw"></i>
-                            <span>
-                                {{ userinfo.user_name }}
-                            </span>
-                        </a>
 
-                    </li>
-                {% endif %}
+
+
 
             </ul>
              <!-- 左侧菜单栏 -->
@@ -63,45 +55,47 @@
                         <li>
                             <a href="{% url 'index' %}"><i class="fa fa-dashboard fa-fw"></i> 仪表盘</a>
                         </li>
-{#                        <li>#}
-{#                            <a href="#"><i class="fa fa-database fa-fw"></i> CMDB<span class="fa arrow"></span></a>#}
-{#                            <ul class="nav nav-second-level collapse">#}
-{#                                <li>#}
-{#                                    <a>主机管理<span class="fa arrow"></span></a>#}
-{#                                    <ul class="nav nav-third-level">#}
-{#                                        <li>#}
-{#                                            <a href="{% url 'hostgroup_manage' %}">主机组管理</a>#}
-{#                                        </li>#}
-{#                                        <li>#}
-{#                                            <a href="#">主机管理</a>#}
-{#                                        </li>#}
-{#                                    </ul>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a>用户管理<span class="fa arrow"></span></a>#}
-{#                                    <ul class="nav nav-third-level">#}
-{#                                        <li>#}
-{#                                            <a href="#">用户组管理</a>#}
-{#                                        </li>#}
-{#                                        <li>#}
-{#                                            <a href="#">用户管理</a>#}
-{#                                        </li>#}
-{#                                    </ul>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a>权限管理<span class="fa arrow"></span></a>#}
-{#                                    <ul class="nav nav-third-level">#}
-{#                                        <li>#}
-{#                                            <a href="#">用户权限</a>#}
-{#                                        </li>#}
-{#                                        <li>#}
-{#                                            <a href="#">用户组权限</a>#}
-{#                                        </li>#}
-{#                                    </ul>#}
-{#                                </li>#}
-{##}
-{#                            </ul>#}
-{#                        </li>#}
+                        {% if userinfo.role.user_role_jd == '超级管理员' %}
+                            <li>
+                                <a href="#"><i class="fa fa-database fa-fw"></i> CMDB<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li>
+                                        <a>主机管理<span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level">
+                                            <li>
+                                                <a href="{% url 'hostgroup_manage' %}">主机组管理</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'cmdb_host_manage' %}">主机管理</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a>用户管理<span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level">
+                                            <li>
+                                                <a href="#">用户组管理</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">用户管理</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a>权限管理<span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level">
+                                            <li>
+                                                <a href="#">用户权限</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">用户组权限</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        {% endif %}
                         <li>
                             <a href="#"><i class="fa fa-database fa-fw" aria-hidden="true"></i> RDBMS<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">

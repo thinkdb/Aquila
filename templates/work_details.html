@@ -51,7 +51,20 @@
                 {% endif %}
 
             </td>
-            <td>{{ items.stage_status }}</td>
+            <td>
+                {% if items.stage_status == 0 %}
+                    {{ 'Audit completed' }}
+                {% elif items.stage_status == 1 %}
+                    {{ 'Execute failed' }}
+                {% elif items.stage_status == 2 %}
+                    {{ 'Execute Successfully' }}
+                {% elif items.stage_status == 3 %}
+                    {{ 'Execute Successfully && Backup successfully' }}
+                {% else %}
+                    {{ 'Execute Successfully && Backup filed' }}
+                {% endif %}
+
+            </td>
             <td>{{ items.sql_content }}</td>
             <td>{{ items.aff_row }}</td>
             <td>{{ items.rollback_id }}</td>

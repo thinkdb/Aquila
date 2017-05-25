@@ -83,30 +83,53 @@ USER_ENCRYPT_KEY = '3df6a1341e8b'
 ```
 
 
-#### 5. 初始化数据
-运行 scripts/init_data.py 文件， 默认的管理员账号和密码为: admin/123456
-
-
-#### 6. 使用 inception 功能时，需要修改pymysql工具的源码， 修改如下：
+#### 5. 使用 inception 功能时，需要修改pymysql工具的源码， 修改如下：
 C:\Python35\Lib\site-packages\pymysql\connections.py 在1071 行前面添加如下内容，
 只要把第一个点前面改成 大于等于5就行,
 ```
 self.server_version = '5.7.18-log'
 ```
 
-#### 7. 通过 inception 工具执行语句时获取具体sql的语法错误内容
+#### 6. 通过 inception 工具执行语句时获取具体sql的语法错误内容
 修改C:\python35\Lib\site-packages\pymysql\cursors.py 334行内容
 ```
         if self._result:
         #if self._result and (self._result.has_next or not self._result.warning_count):
 ```
 
-#### 8. 自行安装 Inception
+#### 7. 自行安装 Inception
 
 http://bac10bd3.wiz03.com/share/s/2WMgLj32GQP92KUCZP2YLIKi0BXq6M3N6QBP2ChQ7O0CHqdo
 
 
-#### 9. 自行安装 pymysql
+#### 8. 自行安装 pymysql
+
+
+## 使用 Aquila 审核平台
+#### 1. 运行环境准备
+python 3+, django 10+
+django 安装文档：http://bac10bd3.wiz03.com/share/s/2WMgLj32GQP92KUCZP2YLIKi2otYZ005t4wx20WMeg2WU1fs
+
+#### 2. 创建数据库
+在配置的 数据库 里面创建 aquila 数据库， 库名根据你的配置来
+
+#### 3. 创建库表
+进入到项目目录执行：
+1. python3 manage.py makemigrations
+2. python3 manage.py migrate
+
+#### 4. 初始化数据
+运行 scripts/init_data.py 文件， 默认的管理员账号和密码为: admin/123456
+
+#### 5. 启动 Aquila
+python3 manage.py runserver 0.0.0.0:80
+
+#### 5. 登录
+http:ip/login
+
+ip 为启动 Aquila 审核平台的主机地址
+
+初始化时只给了管理账号， 其他用户账号自行注册
 
 
 ## 注意事项：

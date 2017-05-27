@@ -1,7 +1,9 @@
 # Aquila
 
 ### 准备工作
-#### 1. 在 `C:\python35\Lib\site-packages\django\db\models\fields\fields.py` 中添加如下内容,用于支持无符号的整型
+#### 1. 修改 fields.py 文件
+windows 在 `C:\python35\Lib\site-packages\django\db\models\fields\fields.py` 中添加如下内容
+linux 在 `/usr/local/lib/python3.5/site-packages/django/db/models/fields/__init__.py` 中添加如下内容
 ```
 class TinyIntegerField(SmallIntegerField, Field):
     def db_type(self, connection):
@@ -91,7 +93,8 @@ self.server_version = '5.7.18-log'
 ```
 
 #### 6. 通过 inception 工具执行语句时获取具体sql的语法错误内容
-修改C:\python35\Lib\site-packages\pymysql\cursors.py 334行内容
+win 下 `C:\python35\Lib\site-packages\pymysql\cursors.py` 334行内容
+linux 下 `/usr/local/lib/python3.5/site-packages/pymysql/cursors.py ` 345 行
 ```
         if self._result:
         #if self._result and (self._result.has_next or not self._result.warning_count):
@@ -108,6 +111,7 @@ http://bac10bd3.wiz03.com/share/s/2WMgLj32GQP92KUCZP2YLIKi0BXq6M3N6QBP2ChQ7O0CHq
 ## 使用 Aquila 审核平台
 #### 1. 运行环境准备
 python 3+, django 10+
+
 django 安装文档：http://bac10bd3.wiz03.com/share/s/2WMgLj32GQP92KUCZP2YLIKi2otYZ005t4wx20WMeg2WU1fs
 
 #### 2. 创建数据库

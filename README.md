@@ -104,15 +104,12 @@ linux 下 `/usr/local/lib/python3.5/site-packages/pymysql/cursors.py ` 345 行
 
 http://bac10bd3.wiz03.com/share/s/2WMgLj32GQP92KUCZP2YLIKi0BXq6M3N6QBP2ChQ7O0CHqdo
 
-
 #### 8. 自行安装 pymysql
 
 
 ## 使用 Aquila 审核平台
 #### 1. 运行环境准备
 python 3+, django 10+
-
-django 安装文档：http://bac10bd3.wiz03.com/share/s/2WMgLj32GQP92KUCZP2YLIKi2otYZ005t4wx20WMeg2WU1fs
 
 #### 2. 创建数据库
 在配置的 数据库 里面创建 aquila 数据库， 库名根据你的配置来

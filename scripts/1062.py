@@ -45,7 +45,7 @@ while True:
             error_id = items[6].split('table')[1].split('Duplicate entry')[1].split(' ')[1].strip('\'')
             sql = "delete from %s where id = %s" % (error_msg, error_id)
             dbapi.conn_query(sql)
-            dbapi.conn_query("start slave")
+            dbapi.conn_query("start subordinate")
         elif error_code == 1032:
             error_msg = items[6].split('table')[1].split(';')[0]
             print(error_msg)

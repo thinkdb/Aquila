@@ -216,17 +216,17 @@ def tran_audit_result(result):
     return result_dict
 
 
-def get_master(db_ip, app_user, app_pass, app_port, database):
+def get_main(db_ip, app_user, app_pass, app_port, database):
     db = DBAPI(db_ip, app_user, app_pass, app_port, database)
 
     if db.error:
         return db.error
-    ret = db.conn_query('show slave status')
+    ret = db.conn_query('show subordinate status')
     if len(ret):
-        master = ret[0][1]
+        main = ret[0][1]
     else:
-        master = db_ip
-    return master
+        main = db_ip
+    return main
 
 
 

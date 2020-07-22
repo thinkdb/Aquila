@@ -151,7 +151,7 @@ def full_backup():
     backup = backup_dir + '/' + file_name
     cmd_1 = innobackup_cmd + ' --defaults-file=' + mysql_config + ' --user=' + mysql_user
     cmd_2 = ' --password=' + mysql_passwd + ' --host=' + mysql_host + ' --port=' + mysql_port
-    cmd_3 = ' --slave-info ' + backup + ' &> ' + backup_logfile + ' &'
+    cmd_3 = ' --subordinate-info ' + backup + ' &> ' + backup_logfile + ' &'
     cmd = cmd_1 + cmd_2 + cmd_3
     run(0, cmd)
 
@@ -192,7 +192,7 @@ def inc_backup(num):
         backup = backup_dir + '/' + file_name
         cmd_1 = innobackup_cmd + ' --defaults-file=' + mysql_config + ' --user=' + mysql_user
         cmd_2 = ' --password=' + mysql_passwd + ' --host=' + mysql_host + ' --port=' + mysql_port
-        cmd_3 = ' --slave-info --incremental --incremental-lsn=%s ' % to_scn
+        cmd_3 = ' --subordinate-info --incremental --incremental-lsn=%s ' % to_scn
         cmd_4 = backup + ' &> ' + backup_logfile + ' &'
         cmd = cmd_1 + cmd_2 + cmd_3 + cmd_4
         run(num, cmd)

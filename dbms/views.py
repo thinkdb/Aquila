@@ -39,8 +39,8 @@ def sql_reviews(request):
                     app_port = item['app_port']
                     host_ip = item['host__host_ip']
                 # 分析出主从关系
-                master_ip = functions.get_master(host_ip, app_user, app_pass, app_port, '')
-                result = functions.ince_run_sql(master_ip, sql_content, db_port=int(app_port), db_user=app_user,
+                main_ip = functions.get_main(host_ip, app_user, app_pass, app_port, '')
+                result = functions.ince_run_sql(main_ip, sql_content, db_port=int(app_port), db_user=app_user,
                                                  db_passwd=app_pass)
                 tran_result = functions.tran_audit_result(result)
                 ret['ince_result'] = tran_result
@@ -50,7 +50,7 @@ def sql_reviews(request):
                     if r == user_prive:
                         ret['app_err'] = '自己不能审核自己的工单'
                         return render(request, 'inception.html', ret)
-                    ince_insert_db(tran_result, user_cookie, master_ip, r, ince_form_obj.cleaned_data['db_name'], sql_content)
+                    ince_insert_db(tran_result, user_cookie, main_ip, r, ince_form_obj.cleaned_data['db_name'], sql_content)
             else:
                 ret['app_err'] = '主机未配置账号密码, 请联系管理员'
         return render(request, 'inception.html', ret)
@@ -232,13 +232,13 @@ def work_runing(request):
 
         # 优化成任务计划来执行，提交后直接返回提交成功，执行结果需要在工单查询中查看
         # 添加任务表，
-            master_ip = functions.get_master(host_ip, app_user, app_pass, app_port, '')
+            main_ip = functions.get_main(host_ip, app_user, app_pass, app_port, '')
 
-            dbms_models.WorkOrderTask.objects.create(wid=wid, app_user=app_user, app_pass=app_pass, host_ip=master_ip, app_port=app_port)
+            dbms_models.WorkOrderTask.objects.create(wid=wid, app_user=app_user, app_pass=app_pass, host_ip=main_ip, app_port=app_port)
             #dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid).update(work_status=2)
             dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid).update(work_status=3)
 
-            result = functions.ince_run_sql(master_ip, sql_content, db_port=app_port, db_user=app_user,
+            result = functions.ince_run_sql(main_ip, sql_content, db_port=app_port, db_user=app_user,
                                             db_passwd=app_pass, enable_check=0, enable_execute=1,
                                             enable_ignore_warnings=1)
             tran_result = functions.tran_audit_result(result)
@@ -254,7 +254,7 @@ def Task():
     task_all = dbms_models.WorkOrderTask.objects.all()
     if task_all:
         for item in task_all:
-            master_ip = item.host_ip
+            main_ip = item.host_ip
             app_port = item.app_port
             app_user = item.app_user
             app_pass = item.app_pass
@@ -262,7 +262,7 @@ def Task():
             sql_content = dbms_models.InceptionWorkSQL.objects.filter(work_order_id=wid).first().sql_content
 
             dbms_models.InceptionWorkOrderInfo.objects.filter(work_order_id=wid).update(work_status=3)
-            result = functions.ince_run_sql(master_ip, sql_content, db_port=app_port, db_user=app_user,
+            result = functions.ince_run_sql(main_ip, sql_content, db_port=app_port, db_user=app_user,
                                         db_passwd=app_pass, enable_check=0, enable_execute=1, enable_ignore_warnings=1)
             tran_result = functions.tran_audit_result(result)
             ince_insert_db(result_dict=tran_result, user_cookie='', host_ip='', review_user='', db_name='',
